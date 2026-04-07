@@ -1,0 +1,32 @@
+name: Fetch arXiv hep-th & hep-ex (JJ-SDU)
+
+# 定时规则：UTC 04:00 = 北京时间 12:00，周一到周五执行
+on:
+  schedule:
+    - cron: '0 4 * * 1-5'
+  # 支持手动触发（测试用）
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install feedparser
+
+      - name: Run fetch script
+        run: python fetch.py
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output
