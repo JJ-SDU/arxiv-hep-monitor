@@ -24,7 +24,8 @@ for cat, url in CATEGORIES.items():
             "author": entry.get("author", ""),
             "link": entry.get("link", ""),
             "time": entry.get("published", ""),
-            "category": cat
+            "category": cat,
+            "summary": entry.get("summary", "").strip()  # 新增：抓取摘要并去除首尾空格
         })
     result[cat] = papers
 
@@ -32,4 +33,4 @@ for cat, url in CATEGORIES.items():
 with open("output/data.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
-print("✅ 抓取完成！实验 + 唯象，最多 100 篇")
+print("✅ 抓取完成！实验 + 唯象，最多 100 篇（已包含摘要）")
