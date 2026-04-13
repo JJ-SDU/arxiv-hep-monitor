@@ -1,216 +1,4 @@
 {
-  "hep-th": [
-    {
-      "title": "Equivariant localization for higher derivative supergravity",
-      "author": "Pietro Benetti Genolini, Florian Gaar, Jerome P. Gauntlett, James Sparks",
-      "link": "https://arxiv.org/abs/2604.08656",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Differential Equations for Massive Correlators",
-      "author": "Daniel Baumann, Austin Joyce, Hayden Lee, Kamran Salehi Vaziri",
-      "link": "https://arxiv.org/abs/2604.08658",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "A Lapse in the Cosmological Constant Problem",
-      "author": "Justin Khoury, Benjamin Muntz, Antonio Padilla",
-      "link": "https://arxiv.org/abs/2604.08659",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "On quantum tunnelling in the presence of Noether charges",
-      "author": "Giulio Barni, Thomas Steingasser",
-      "link": "https://arxiv.org/abs/2604.08660",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Effective strings and particles interacting in 3D: the Ising model",
-      "author": "J. M. Viana Parente Lopes, Jos\\'e Matos, Joao Penedones",
-      "link": "https://arxiv.org/abs/2604.08670",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Reduced superblocks at next-to-next-to-extremality for all half-maximally supersymmetric CFTs",
-      "author": "Mitchell Woolley",
-      "link": "https://arxiv.org/abs/2604.08673",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Harmonic Analysis of the Instanton Prepotential",
-      "author": "Rafael \\'Alvarez-Garc\\'ia, Fabian Ruehle",
-      "link": "https://arxiv.org/abs/2604.08725",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Lattice Realizations of Flat Gauging and T-duality Defects at Any Radius",
-      "author": "Riccardo Argurio, Giovanni Galati, Nathan Godechal",
-      "link": "https://arxiv.org/abs/2604.09126",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Consistent Truncations from Duality Symmetries and Desingularization of Orbifold Uplifts",
-      "author": "Anik Rudra, Colin Sterckx, Mario Trigiante",
-      "link": "https://arxiv.org/abs/2604.09137",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Covariant scalar-tensor theories beyond second derivatives",
-      "author": "Mohammad Ali Gorji, Pavel Petrov, Karim Noui",
-      "link": "https://arxiv.org/abs/2604.09170",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Aspects of Non-Relativistic Supersymmetric Theories",
-      "author": "Osman Ergec",
-      "link": "https://arxiv.org/abs/2604.09275",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Fermionic Casimir effect in an axial Lorentz-violating background",
-      "author": "A. Mart\\'in-Ruiz, M. B. Cruz, E. R. Bezerra de Mello",
-      "link": "https://arxiv.org/abs/2604.09381",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "The many facets of a hyperbolic tetrahedron: open and closed triangulations of 3d gravity",
-      "author": "Daniel L. Jafferis, Diandian Wang",
-      "link": "https://arxiv.org/abs/2604.09396",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Space- vs Time-dependence in taming the infrared instability of projectable Ho\\v rava Gravity",
-      "author": "Shinji Mukohyama, Jury Radkovski, Sergey Sibiryakov",
-      "link": "https://arxiv.org/abs/2604.09400",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "D2-brane probes of non-toric cDV threefolds via monopole superpotentials",
-      "author": "Andr\\'es Collinucci, Marina Moleti, Roberto Valandro",
-      "link": "https://arxiv.org/abs/2604.09428",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Relativistic single-electron wavepacket in quantum electromagnetic fields II: Quantum radiation emitted by a uniformly accelerated electron",
-      "author": "Shih-Yuin Lin, Bei-Lok Hu",
-      "link": "https://arxiv.org/abs/2604.09456",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "The superconformal index and localizing higher derivative supergravity",
-      "author": "Florian Gaar, Jerome P. Gauntlett, Jaeha Park, James Sparks",
-      "link": "https://arxiv.org/abs/2604.09490",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Conservation laws in Lie-Poisson classical field theories",
-      "author": "O. Abla, M. J. Neves",
-      "link": "https://arxiv.org/abs/2604.09500",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Classification of 2D Fermionic Systems with a $\\mathbb Z_2$ Flavor Symmetry",
-      "author": "Chi-Ming Chang, Jin Chen, Fengjun Xu",
-      "link": "https://arxiv.org/abs/2604.09503",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Does Gravity Render Probability Quasilocal?",
-      "author": "Oem Trivedi",
-      "link": "https://arxiv.org/abs/2604.08611",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Love numbers of black holes and compact objects",
-      "author": "Mar\\'ia J. Rodr\\'iguez, Luca Santoni, Adam R. Solomon",
-      "link": "https://arxiv.org/abs/2604.08653",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Nucleation of Sachdev-Ye-Kitaev Clusters in One Spatial Dimension",
-      "author": "Hrant Topchyan, Tigran A. Sedrakyan",
-      "link": "https://arxiv.org/abs/2604.08662",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Minimum mass, maximum charge and hyperbolicity in scalar Gauss-Bonnet gravity",
-      "author": "Dario Rossi, Leonardo Gualtieri, Thomas P. Sotiriou",
-      "link": "https://arxiv.org/abs/2604.08668",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Tidal Response of Compact Objects",
-      "author": "Sumanta Chakraborty, Paolo Pani",
-      "link": "https://arxiv.org/abs/2604.08679",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Axion Quality in Warped Extra-Dimension",
-      "author": "Kiwoon Choi, Chang Hyeon Lee, Chang Sub Shin",
-      "link": "https://arxiv.org/abs/2604.08700",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Exact SL(2,Z)-Structure of Lattice Maxwell Theory with $\\theta$-term in Modified Villain Formulation",
-      "author": "Shoto Aoki, Yoshio Kikukawa, Toshinari Takemoto",
-      "link": "https://arxiv.org/abs/2604.08736",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "A Conformally Invariant Dirac-type Equation on Compact Spin Manifolds: the Effect of the Geometry",
-      "author": "Ali Maalaoui, Vittorio Martino",
-      "link": "https://arxiv.org/abs/2604.08738",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Genericness of quantum damping of cosmological shear in modified loop quantum cosmology",
-      "author": "Wen-Cong Gan, Leila L. Graef, Rudnei O. Ramos, Gustavo S. Vicente, Anzhong Wang",
-      "link": "https://arxiv.org/abs/2604.08912",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Weyl-type solutions with multipolar scalar fields",
-      "author": "Yen-Kheng Lim",
-      "link": "https://arxiv.org/abs/2604.08951",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    },
-    {
-      "title": "Probing the Kinematic Dipole with LISA: an analytical treatment",
-      "author": "Jacopo Fumagalli, Giulia Cusin, Cyril Pitrou, Gianmassimo Tasinato",
-      "link": "https://arxiv.org/abs/2604.08968",
-      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
-      "category": "hep-th"
-    }
-  ],
   "hep-ex": [
     {
       "title": "Test of lepton flavour universality with $B^0\\to K^{*0}\\ell^+\\ell^-$ decays at large dilepton invariant mass",
@@ -309,6 +97,351 @@
       "link": "https://arxiv.org/abs/2604.02826",
       "time": "Mon, 13 Apr 2026 00:00:00 -0400",
       "category": "hep-ex"
+    }
+  ],
+  "hep-ph": [
+    {
+      "title": "How well can the QCD axion hide?",
+      "author": "Sung Mook Lee, Maria Ramos, Fuensanta Vilches",
+      "link": "https://arxiv.org/abs/2604.08657",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "On Exclusive Coherent Production of Bosons in Electron-Proton Collisions",
+      "author": "Reuven Balkin, Ta'el Coren, Alexander Jentsch, Hongkai Liu, Maksym Ovchynnikov, Yotam Soreq, Sokratis Trifinopoulos",
+      "link": "https://arxiv.org/abs/2604.08667",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Probing Higgs and Top Interactions through the Muon Lens at multi-TeV Muon Colliders",
+      "author": "Tisa Biswas, Anindya Datta, Barbara Mele",
+      "link": "https://arxiv.org/abs/2604.08688",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Axion Quality in Warped Extra-Dimension",
+      "author": "Kiwoon Choi, Chang Hyeon Lee, Chang Sub Shin",
+      "link": "https://arxiv.org/abs/2604.08700",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "A numerical implementation of the NLO DIS structure functions in the dipole picture",
+      "author": "Henri H\\\"anninen, Heikki M\\\"antysaari, Jani Penttala",
+      "link": "https://arxiv.org/abs/2604.09071",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Probing High-Quality Axions with Gravitational Waves",
+      "author": "Ruiyu Zhou, Jin-Wei Wang, Ligong Bian",
+      "link": "https://arxiv.org/abs/2604.09081",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Classical and spin polarizabilities of singly heavy baryons within heavy baryon chiral perturbation theory",
+      "author": "Zi-Jun Li, Zhan-Wei Liu, Ping Chen",
+      "link": "https://arxiv.org/abs/2604.09149",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Hadronic form factors in QCD and the incompleteness problem in the time-like region",
+      "author": "Enrique Ruiz Arriola, Pablo Sanchez-Puertas, Wojciech Broniowski",
+      "link": "https://arxiv.org/abs/2604.09185",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "A Levinson's theorem for particle form factors",
+      "author": "Francesco Rosini, Simone Pacetti",
+      "link": "https://arxiv.org/abs/2604.09207",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Constraining new physics in charm quark associated Higgs boson production events using the Standard Model effective field theory approach",
+      "author": "Nordin Breugelmans, Felix Heyen, Jorgen D'Hondt, Michael Tytgat, Gerrit Van Onsem",
+      "link": "https://arxiv.org/abs/2604.09225",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Probing Solar Symmetrons with Direct Detection",
+      "author": "Hannah Banks, Anne-Christine Davis, Luca Visinelli",
+      "link": "https://arxiv.org/abs/2604.09283",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "A General Prescription for Spurion Analysis of Non-Invertible Selection Rules",
+      "author": "Ling-Xiao Xu",
+      "link": "https://arxiv.org/abs/2604.09345",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "CMB signatures of gravity-mediated dark radiation in $\\mathbf{\\Delta N_{\\rm eff}}$",
+      "author": "Anish Ghoshal, Sk Jeesun, Kazunori Kohri",
+      "link": "https://arxiv.org/abs/2604.09356",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Threshold Top-Quark Pair-Production: Cross Sections and Key Uncertainties",
+      "author": "Maria Vittoria Garzelli, Giovanni Limatola, Sven-Olaf Moch, Matthias Steinhauser, Oleksandr Zenaiev",
+      "link": "https://arxiv.org/abs/2604.09485",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "The four-loop non-singlet splitting functions in QCD",
+      "author": "Thomas Gehrmann, Andreas von Manteuffel, Vasily Sotnikov, Tongzhi Yang",
+      "link": "https://arxiv.org/abs/2604.09534",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Classification of Pati--Salam Asymmetric $\\mathbb{Z}_2 \\times \\mathbb{Z}_2$ Heterotic String Orbifolds",
+      "author": "Luke A. Detraux, Alon E. Faraggi, Benjamin Percival",
+      "link": "https://arxiv.org/abs/2604.07950",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "High-dimensional inference for the $\\gamma$-ray sky with differentiable programming",
+      "author": "Siddharth Mishra-Sharma, Tracy R. Slatyer, Yitian Sun, Yuqing Wu",
+      "link": "https://arxiv.org/abs/2604.08648",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Primordial Neutron Stars",
+      "author": "Gordan Krnjaic, Duncan Rocha, Huangyu Xiao",
+      "link": "https://arxiv.org/abs/2604.08651",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "On quantum tunnelling in the presence of Noether charges",
+      "author": "Giulio Barni, Thomas Steingasser",
+      "link": "https://arxiv.org/abs/2604.08660",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Tidal Response of Compact Objects",
+      "author": "Sumanta Chakraborty, Paolo Pani",
+      "link": "https://arxiv.org/abs/2604.08679",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Genericness of quantum damping of cosmological shear in modified loop quantum cosmology",
+      "author": "Wen-Cong Gan, Leila L. Graef, Rudnei O. Ramos, Gustavo S. Vicente, Anzhong Wang",
+      "link": "https://arxiv.org/abs/2604.08912",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "New limits on the Pauli forbidden transitions in 12C nuclei obtained with the complete Borexino dataset",
+      "author": "Borexino collaboration, D. Basilico, G. Bellini, J. Benziger, R. Biondi, B. Caccianiga, A. Caminata, A. Chepurnov, D. D Angelo, A. Derbin, A. Di Giacinto, V. Di Marcello, X. F. Ding, A. Di Ludovico, L. Di Noto, I. Drachnev, D. Franco, C. Galbiati, C. Ghiano, M. Giammarchi, A. Goretti, M. Gromov, D. Guffanti, Aldo Ianni, Andrea Ianni, A. Jany, V. Kobychev, G. Korga, S. Kumaran, M. Laubenstein, E. Litvinovich, P. Lombardi, I. Lomskaya, L. Ludhova, I. Machulin, J. Martyn, E. Meroni, L. Miramonti, M. Misiaszek, V. Muratova, L. Oberauer, V. Orekhov, F. Ortica, M. Pallavicini, L. Pelicci, O. Penek, L. Pietrofaccia, N. Pilipenko, A. Pocar, G. Raikov, M. T. Ranalli, G. Ranucci, A. Razeto, A. Re, N. Rossi, S. Schonert, D. Semenov, G. Settanta, M. Skorokhvatov, A. Singhal, O. Smirnov, A. Sotnikov, R. Tartaglia, G. Testera, E. Unzhakov, A. Vishneva, R. B. Vogelaar, F. von Feilitzsch, M. Wojcik, M. Wurm, S. Zavatarelli, K. Zuber, G. Zuzel",
+      "link": "https://arxiv.org/abs/2604.08950",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Towards better nuclear charge radii",
+      "author": "Istv\\'an Angeli, Dimiter L. Balabanski, Paraskevi Dimitriou,  Dipti, Kieran T. Flanagan, Georgi Georgiev, Mikhail Gorchtein, Paul G\\`ueye, Fabian Hei{\\ss}e, Andreas Knecht, Kei Minamisono, Wilfried N\\\"ortersh\\\"auser, Ben Ohayon, Natalia S. Oreshkina, B. K. Sahoo, Hunter Staiger, Endre Takacs, Xiaofei Yang, Deyan T. Yordanov",
+      "link": "https://arxiv.org/abs/2604.08985",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Bounding axion dark energy",
+      "author": "Gary Shiu, Flavio Tonioni, Hung V. Tran",
+      "link": "https://arxiv.org/abs/2604.09141",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Photoproduction in general-purpose event generators",
+      "author": "Ilkka Helenius, Peter Meinzinger, Simon Pl\\\"atzer, Peter Richardson",
+      "link": "https://arxiv.org/abs/2406.08026",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Potential of constraining the Fifth Force Using the Earth as a Spin and Mass Source from space",
+      "author": "Zheng-Ting Lai, Jun-Xu Lu, Li-Sheng Geng, Kai Wei, Wei Ji",
+      "link": "https://arxiv.org/abs/2410.12469",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Numerical simulations of density perturbation and gravitational wave production from cosmological first-order phase transition",
+      "author": "Jintao Zou, Zhiqing Zhu, Zizhuo Zhao, Ligong Bian",
+      "link": "https://arxiv.org/abs/2502.20166",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "A new method for estimating unknown one-order higher QCD corrections to the perturbative series using the linear regression through the origin",
+      "author": "Zhi-Fei Wu, Xing-Gang Wu, Jiang Yan, Xu-Dong Huang, Jian-Ming Shen",
+      "link": "https://arxiv.org/abs/2505.05131",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Masses of Purely Top-Quark Bound States: Toponium and the Triply-Top Baryon",
+      "author": "Z. Rajabi Najjar, K. Azizi",
+      "link": "https://arxiv.org/abs/2511.10053",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Nucleon decays into three leptons: Noncontact contributions",
+      "author": "Jing Chen, Yi Liao, Xiao-Dong Ma, Hao-Lin Wang",
+      "link": "https://arxiv.org/abs/2512.02692",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "TeV Scale Quark-Lepton Unification",
+      "author": "K. S. Babu, Sumit Biswas, Shaikh Saad",
+      "link": "https://arxiv.org/abs/2512.11113",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Improved Standard-Model predictions for $\\eta^{(\\prime)}\\to \\ell^+ \\ell^-$",
+      "author": "Noah Messerli, Martin Hoferichter, Bai-Long Hoid, Simon Holz, Bastian Kubis",
+      "link": "https://arxiv.org/abs/2512.13776",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Assessing the role of threshold conditions in the determination of uncertainties in pole extractions using Pad\\'e approximants",
+      "author": "Balma Duch, Pere Masjuan",
+      "link": "https://arxiv.org/abs/2512.20721",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Fully-strange tetraquarks: fall-apart decays and experimental candidates",
+      "author": "Feng-Xiao Liu, Xian-Hui Zhong, Qiang Zhao",
+      "link": "https://arxiv.org/abs/2601.03614",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Dominant Thermal Resonant Mechanism for Low-Scale Leptogenesis",
+      "author": "Shao-Ping Li, Apostolos Pilaftsis",
+      "link": "https://arxiv.org/abs/2601.15921",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Elastic phase shift analysis reveals the geometric origin of the residue phase",
+      "author": "S. Ceci, R. Omerovi\\'c, H. Osmanovi\\'c, M. Uroi\\'c, M. Vuk\\v{s}i\\'c, B. Zauner",
+      "link": "https://arxiv.org/abs/2601.20816",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Axion-Like Electrophilic Portal for Pion Dark Matter",
+      "author": "Vincenzo Fiorentino, Ji-Heng Guo, Giacomo Landini, Federico Mescia",
+      "link": "https://arxiv.org/abs/2602.02678",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Correlator of heavy-light quark currents in HQET in the large $\\beta_0$ limit",
+      "author": "Andrey G. Grozin",
+      "link": "https://arxiv.org/abs/2603.18711",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Understanding Bell locality tests at colliders",
+      "author": "J. A. Aguilar-Saavedra, J. A. Casas, J. M. Moreno",
+      "link": "https://arxiv.org/abs/2603.19389",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Interacting Scalar Fields as Dark Energy and Dark Matter in Einstein scalar Gauss Bonnet Gravity",
+      "author": "Saddam Hussain, Simran Arora, Yamuna Rana, Benjamin Rose, Anzhong Wang",
+      "link": "https://arxiv.org/abs/2507.05207",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Scaling flow-based approaches for topology sampling in $\\mathrm{SU}(3)$ gauge theory",
+      "author": "Claudio Bonanno, Andrea Bulgarelli, Elia Cellini, Alessandro Nada, Dario Panfalone, Davide Vadacchino, Lorenzo Verzichelli",
+      "link": "https://arxiv.org/abs/2510.25704",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Dark winds on the horizon: Prospects for detecting neutrino and hot dark matter wakes in large-scale structure",
+      "author": "Caio B. de S. Nascimento, Marilena Loverde",
+      "link": "https://arxiv.org/abs/2511.08574",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Structure of Chern-Simons Graviton Scattering Amplitudes from Topological Graviton Equivalence Theorem and Double Copy",
+      "author": "Hong-Xu Liu, Zi-Xuan Yi, Hong-Jian He",
+      "link": "https://arxiv.org/abs/2512.10870",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "High-energy Neutrino Predictions for T Coronae Borealis: Probing Particle Acceleration in Novae",
+      "author": "Prantik Sarmah, Sovan Chakraborty, Xilu Wang",
+      "link": "https://arxiv.org/abs/2512.22338",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Higher-order hadronic vacuum polarization contribution to the muon $g-2$ from lattice QCD",
+      "author": "Arnau Beltran, Alessandro Conigli, Simon Kuberski, Harvey B. Meyer, Konstantin Ottnad, Hartmut Wittig",
+      "link": "https://arxiv.org/abs/2603.06806",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Negative running of gravitational positivity",
+      "author": "J. Fernandez, M. Ruhdorfer, J. Serra",
+      "link": "https://arxiv.org/abs/2603.15755",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Thermalization of SU(2) Lattice Gauge Fields on Quantum Computers",
+      "author": "Jiunn-Wei Chen, Yu-Ting Chen, Ghanashyam Meher, Berndt M\\\"uller, Andreas Sch\\\"afer, Xiaojun Yao",
+      "link": "https://arxiv.org/abs/2603.23948",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "Nonlinear Lattice Framework for Inflation: Bridging stochastic inflation and the $\\delta{N}$ formalism",
+      "author": "Pankaj Saha, Yuichiro Tada, Yuko Urakawa",
+      "link": "https://arxiv.org/abs/2604.00978",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
+    },
+    {
+      "title": "What Are Pulsar Companions Made of? Using Gravitational Tides to Probe Their Compositions",
+      "author": "Liam Colombo-Murphy, Lucas Brown, Stefano Profumo, M. Grant Roberts, Aya Westerling",
+      "link": "https://arxiv.org/abs/2604.02725",
+      "time": "Mon, 13 Apr 2026 00:00:00 -0400",
+      "category": "hep-ph"
     }
   ]
 }
