@@ -1,5 +1,4 @@
 name: Fetch arXiv hep-th & hep-ex (JJ-SDU)
-
 on:
   schedule:
     - cron: '10 1 * * 1-5'
@@ -16,15 +15,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
-
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install feedparser requests
-
       - name: Run fetch script
         run: python fetch.py
-
       - name: Commit & Push
         uses: EndBug/add-and-commit@v9
         with:
