@@ -24,25 +24,23 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install feedparser
+          pip install feedparser requests
 
       - name: Run fetch script
         run: |
-          echo "当前工作目录：$(pwd)"
-          echo "运行前文件状态："
+          echo "=== 脚本运行前状态 ==="
           ls -la output/
           python fetch.py
-          echo "运行后文件状态："
+          echo "=== 脚本运行后状态 ==="
           ls -la output/
-          cat output/data.json | head -20  # 打印文件开头，确认内容
+          cat output/data.json | head -20
 
-      # 强制提交（不管有没有变更，都会覆盖）
+      # 用官方推荐的 add-and-commit Action，稳定可靠
       - name: Commit and push data.json
-        uses: ad-m/github-push-action@master
+        uses: EndBug/add-and-commit@v9
         with:
-          branch: ${{ github.ref_name }}
-          directory: ./
-          files: output/data.json
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          author_name: github-actions[bot]
+          author_email: github-actions[bot]@users.noreply.github.com
           message: "Auto-update data [skip ci] - $(date +'%Y-%m-%d %H:%M:%S')"
-          force: true  # 关键：强制推送，即使 Git 认为无变更
+          add: "output/data.json"  # 只提交这个文件
+          push: true
