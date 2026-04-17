@@ -1,44 +1,51 @@
 import feedparser
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
-# 创建输出目录
+# 输出目录
 os.makedirs("output", exist_ok=True)
 
-# 获取今天的日期（arXiv 日期格式：Thu, 27 Mar 2025）
-today = datetime.utcnow().strftime("%a, %d %b %Y")
+# ===================== 核心修复：抓取最近 24 小时内的论文（无视时区）=====================
+now = datetime.utcnow()
+one_day_ago = now - timedelta(hours=24)  # 最近 24 小时
+print(f"🕒 抓取最近 24 小时内的论文（UTC）: {one_day_ago.strftime('%Y-%m-%d %H:%M')} ~ {now.strftime('%Y-%m-%d %H:%M')}")
 
-# 监控分类
+# 分类
 CATEGORIES = ["hep-ex", "hep-ph"]
 result = {}
-
-print(f"📅 只抓取今天的论文：{today}")
 
 for cat in CATEGORIES:
     url = f"http://export.arxiv.org/api/query?search_query=cat:{cat}&sortBy=submittedDate&sortOrder=descending&max_results=100"
     feed = feedparser.parse(url)
-    
+
     papers = []
     for entry in feed.entries:
-        pub_date = entry.get("published", "")
-        
-        # ✅ 只保留【今天发布】的论文
-        if today in pub_date:
-            papers.append({
-                "title": entry.get("title", "").strip(),
-                "author": entry.get("author", ""),
-                "link": entry.get("link", ""),
-                "time": entry.get("published", ""),
-                "category": cat,
-                "summary": entry.get("summary", "").strip()
-            })
+        try:
+            # 解析论文发布时间
+            pub_time = datetime(*entry.published_parsed[:6])
+
+            # 只保留【最近 24 小时内】的论文
+            if pub_time >= one_day_ago:
+                papers.append({
+                    "title": entry.title.strip(),
+                    "author": entry.author,
+                    "link": entry.link,
+                    "time": entry.published,
+                    "category": cat,
+                    "summary": entry.summary.strip()
+                })
+        except:
+            continue
 
     result[cat] = papers
-    print(f"✅ {cat} 今天抓取到：{len(papers)} 篇")
+    print(f"✅ {cat} 抓到：{len(papers)} 篇")
 
-# ✅ 强制覆盖写入 data.json（完全替换旧文件）
+# ===================== 强制覆盖写入（旧文件直接没了）=====================
 with open("output/data.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
-print("\n🎉 完成！只保留今天论文，旧文件已覆盖")
+# 强制修改时间戳 → 确保 Git 一定提交
+os.utime("output/data.json", None)
+
+print("\n🎉 抓取完成！文件已强制覆盖！")
