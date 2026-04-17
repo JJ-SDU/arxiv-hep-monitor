@@ -2,41 +2,66 @@ name: Fetch arXiv hep-th & hep-ex (JJ-SDU)
 
 # 定时规则：UTC 01:10=北京09:10, UTC 02:00=北京10:00, UTC 06:00=北京14:00，周一到周五执行
 on:
-schedule:
-  # UTC 1:10 = 北京时间 9:10（东八区），周一到周五
-  - cron: '10 1 * * 1,2,3,4,5'
-  # UTC 2:00 = 北京时间 10:00
-  - cron: '0 2 * * 1,2,3,4,5'
-  # UTC 6:00 = 北京时间 14:00
-  - cron: '0 6 * * 1,2,3,4,5'
-  # 支持手动触发（测试用）
-  workflow_dispatch:
+  schedule:
+    - cron: '10 1 * * 1-5'   # 北京时间 上午 9:10
+    - cron: '0 2 * * 1-5'    # 北京时间 上午 10:00
+    - cron: '0 6 * * 1-5'    # 北京时间 下午 2:00
+  workflow_dispatch:  # 支持手动触发（测试用）
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # 🔥 关键：给作业添加写权限
+    # 赋予写权限（关键）
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      # 拉取仓库代码（完整历史，避免冲突）
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 拉取所有提交历史，解决推送冲突
 
+      # 配置Python环境
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      # 安装依赖（升级pip+打印依赖，便于排查）
       - name: Install dependencies
-        run: pip install feedparser
+        run: |
+          pip install --upgrade pip
+          pip install feedparser
+          pip list  # 打印已安装包，确认feedparser安装成功
 
+      # 执行抓取脚本（增加日志，验证文件生成）
       - name: Run fetch script
-        run: python fetch.py
+        run: |
+          echo "当前工作目录：$(pwd)"
+          echo "工作目录文件列表：$(ls -la)"
+          # 执行抓取脚本
+          python fetch.py
+          # 验证output/data.json是否生成
+          if [ -f "output/data.json" ]; then
+            echo "✅ data.json 文件生成成功！"
+            ls -la output/  # 打印output目录内容
+          else
+            echo "❌ 错误：output/data.json 文件未生成！"
+            exit 1  # 终止流程，便于发现脚本问题
+          fi
 
-      # 自动提交并上传 data.json 到仓库
+      # 提交并推送文件（增加拉取步骤，避免冲突）
       - name: Commit and push data.json
         run: |
+          # 配置git用户信息
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          # 拉取最新代码（避免远程有更新导致推送失败）
+          git pull origin ${{ github.ref }} --rebase
+          # 添加文件
           git add output/data.json
-          git commit -m "Auto-update data [skip ci]" || echo "No changes to commit"
-          git push
+          # 提交（带时间戳，便于排查；无变更时提示）
+          git commit -m "Auto-update data [skip ci] - $(date +'%Y-%m-%d %H:%M:%S')" || echo "⚠️ 无变更可提交"
+          # 推送代码
+          git push origin ${{ github.ref }}
+          echo "✅ 推送完成！"
