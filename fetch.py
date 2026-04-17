@@ -2,7 +2,6 @@ import json
 import os
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
 
 # 创建输出目录
 os.makedirs("output", exist_ok=True)
@@ -20,7 +19,7 @@ def get_arxiv_original_date(category="hep-ex"):
         pass
     return "No date"
 
-# ============== 抓取一个 list/new 页面全部文章 ==============
+# ============== 抓取一个 list/new 页面全部文章（修复版）==============
 def fetch_all_from_list(category):
     url = f"https://arxiv.org/list/{category}/new"
     try:
@@ -30,48 +29,56 @@ def fetch_all_from_list(category):
         return []
 
     papers = []
+    # 直接按顺序抓取所有 dt/dd 对，避免按h2识别导致的问题
     dts = soup.find_all("dt")
+    dds = soup.find_all("dd")
 
-    for dt in dts:
-        # 获取 arXiv 编号
-        id_a = dt.find("a", title="Abstract")
-        if not id_a:
+    for i, dt in enumerate(dts):
+        if i >= len(dds):
             continue
-        arxiv_id = id_a["href"].split("/")[-1]
+        dd = dds[i]
 
-        # 获取对应 dd 内容
-        dd = dt.find_next_sibling("dd")
-        if not dd:
+        # 1. 提取 arXiv 完整编号（例如 arXiv:2604.15049）
+        id_span = dt.find("span", class_="list-identifier")
+        if not id_span:
             continue
+        arxiv_number = id_span.find("a").get_text(strip=True)
 
-        # 完整作者
-        authors = []
-        author_div = dd.find("div", class_="list-authors")
-        if author_div:
-            for a in author_div.find_all("a"):
-                authors.append(a.text.strip())
-        author_str = ", ".join(authors) if authors else "Unknown"
+        # 2. 提取括号里的 announce type 原文（例如 cross-list from astro-ph.HE）
+        announce_type = ""
+        sup_text = id_span.find("sup")
+        if sup_text:
+            announce_type = sup_text.get_text(strip=True).strip("()")
 
-        # 标题
+        # 3. 完整作者列表（含括号内的合作组说明）
+        author_str = ""
+        auth_div = dd.find("div", class_="list-authors")
+        if auth_div:
+            # 直接取整个div的文本，不只是<a>标签，这样能包含括号内容
+            author_str = auth_div.get_text(strip=True).replace("Authors:", "").strip()
+
+        # 4. 标题
+        title = ""
         title_div = dd.find("div", class_="list-title")
-        title = title_div.text.replace("Title:", "").strip() if title_div else ""
+        if title_div:
+            title = title_div.get_text(strip=True).replace("Title:", "").strip()
 
-        # 链接
-        link = f"https://arxiv.org/abs/{arxiv_id}"
+        # 5. 链接
+        link = f"https://arxiv.org/abs/{arxiv_number.replace('arXiv:', '')}"
 
-        # 摘要（只保留摘要）
-        abstract_p = dd.find("p", class_="list-abstract")
-        summary = abstract_p.text.replace("Abstract:", "").strip() if abstract_p else ""
+        # 6. 摘要（修复空摘要问题，直接取完整文本）
+        summary = ""
+        abs_p = dd.find("p", class_="list-abstract")
+        if abs_p:
+            summary = abs_p.get_text(strip=True).replace("Abstract:", "").strip()
 
-        # 时间
-        pub_time = get_arxiv_original_date(category)
-
-        # 加入列表
+        # 7. 最终字段：按你要求的结构
         papers.append({
             "title": title,
             "author": author_str,
             "link": link,
-            "time": pub_time,
+            "arXiv number": arxiv_number,
+            "Announce type": announce_type,
             "category": category,
             "summary": summary
         })
