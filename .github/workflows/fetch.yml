@@ -1,75 +1,47 @@
 name: Fetch arXiv hep-th & hep-ex (JJ-SDU)
 
-# 定时规则：UTC 01:10=北京09:10, UTC 02:00=北京10:00, UTC 06:00=北京14:00，周一到周五执行
 on:
   schedule:
     - cron: '10 1 * * 1-5'   # 北京时间 上午 9:10
     - cron: '0 2 * * 1-5'    # 北京时间 上午 10:00
     - cron: '0 6 * * 1-5'    # 北京时间 下午 2:00
-  workflow_dispatch:  # 支持手动触发（测试用）
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # 赋予写权限（关键）
     permissions:
       contents: write
     steps:
-      # 拉取仓库代码（完整历史，避免冲突）
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # 拉取所有提交历史，解决推送冲突
 
-      # 配置Python环境
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # 安装依赖（升级pip+打印依赖，便于排查）
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install feedparser
-          pip list  # 打印已安装包，确认feedparser安装成功
 
-      # 执行抓取脚本（增加日志，验证文件生成）
       - name: Run fetch script
         run: |
-          echo "当前工作目录：$(pwd)"
-          echo "工作目录文件列表：$(ls -la)"
-          # 执行抓取脚本
           python fetch.py
-          # 验证output/data.json是否生成
           if [ -f "output/data.json" ]; then
             echo "✅ data.json 文件生成成功！"
-            ls -la output/  # 打印output目录内容
           else
             echo "❌ 错误：output/data.json 文件未生成！"
-            exit 1  # 终止流程，便于发现脚本问题
+            exit 1
           fi
 
-      # 提交并推送文件（调整顺序，解决冲突）
+      # 直接用现成的 Action 提交推送，自动处理冲突
       - name: Commit and push data.json
-        run: |
-          # 配置git用户信息
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # 先暂存修改（关键！解决unstaged changes问题）
-          git add output/data.json
-          
-          # 拉取最新代码（先暂存再拉取，避免冲突）
-          git pull origin ${{ github.ref }} --rebase
-          
-          # 检查是否有变更
-          if git diff --cached --quiet; then
-            echo "⚠️  无变更可提交，跳过推送"
-          else
-            # 提交（带时间戳，便于排查）
-            git commit -m "Auto-update data [skip ci] - $(date +'%Y-%m-%d %H:%M:%S')"
-            # 推送代码
-            git push origin ${{ github.ref }}
-            echo "✅ 推送完成！"
-          fi
+        uses: ad-m/github-push-action@master
+        with:
+          branch: ${{ github.ref_name }}
+          directory: ./output
+          files: data.json
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: "Auto-update data [skip ci] - $(date +'%Y-%m-%d %H:%M:%S')"
