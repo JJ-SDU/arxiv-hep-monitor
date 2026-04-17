@@ -34,24 +34,29 @@ def fetch_from_list_page(category):
         return []
 
     papers = []
+
+    # 先定位三个分段标题，确定每篇属于哪一类
+    h2_new = soup.find("h2", string=lambda s: s and "New Submissions" in s)
+    h2_cross = soup.find("h2", string=lambda s: s and "Cross listings" in s)
+    h2_replace = soup.find("h2", string=lambda s: s and "Replacements" in s)
+
+    # 遍历所有论文 dt
     dts = soup.find_all("dt")
-
     for dt in dts:
-        # 1. arXiv 编号
-        id_a = dt.find("a", title="Abstract")
-        if not id_a:
+        # 1. 提取 arXiv 完整编号
+        id_span = dt.find("span", class_="list-identifier")
+        if not id_span:
             continue
-        arxiv_id = id_a["href"].split("/")[-1]
-        full_arxiv_id = f"arXiv:{arxiv_id}"
+        arxiv_id = id_span.text.strip().split()[0]  # 形如 arXiv:2501.13530
 
-        # 2. 识别 Announce Type
+        # 2. 判断属于哪一类
         announce_type = "new"
-        if "cross-list" in dt.text:
-            announce_type = "cross-list"
-        elif "replacement" in dt.text:
-            announce_type = "replacement"
+        if h2_cross and dt.find_previous("h2") == h2_cross:
+            announce_type = "cross"
+        elif h2_replace and dt.find_previous("h2") == h2_replace:
+            announce_type = "replace"
 
-        # 3. 对应详情 dd
+        # 3. 取下一条详情 dd
         dd = dt.find_next_sibling("dd")
         if not dd:
             continue
@@ -69,12 +74,12 @@ def fetch_from_list_page(category):
         title = title_div.text.replace("Title:", "").strip() if title_div else ""
 
         # 6. 链接
-        link = f"https://arxiv.org/abs/{arxiv_id}"
+        link = f"https://arxiv.org/abs/{arxiv_id.split(':')[-1]}"
 
-        # 7. 摘要（前面加上编号+类型）
+        # 7. 摘要（严格按你要的格式）
         abstract_p = dd.find("p", class_="list-abstract")
         abstract_raw = abstract_p.text.replace("Abstract:", "").strip() if abstract_p else ""
-        summary = f"{full_arxiv_id} Announce Type: {announce_type}\n{abstract_raw}"
+        summary = f"{arxiv_id} Announce Type: {announce_type}\n{abstract_raw}"
 
         papers.append({
             "title": title,
@@ -87,7 +92,7 @@ def fetch_from_list_page(category):
 
     return papers
 
-# ============== 只抓取这两个分类的全部 new/cross/replace ==============
+# ============== 抓取 hep-ex + hep-ph 全部三类 ==============
 CATEGORIES = ["hep-ex", "hep-ph"]
 
 result = {
