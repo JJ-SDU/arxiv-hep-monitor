@@ -1,13 +1,14 @@
+import feedparser
 import json
 import os
 import requests
+from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
-from datetime import datetime
 
 # 创建输出目录
 os.makedirs("output", exist_ok=True)
 
-# ============== 从网页抓取【原始日期格式】 ==============
+# ============== 从网页抓取【原始日期格式】（保留原功能）==============
 def get_arxiv_original_date(category="hep-ex"):
     url = f"https://arxiv.org/list/{category}/new"
     try:
@@ -20,79 +21,43 @@ def get_arxiv_original_date(category="hep-ex"):
         pass
     return "No date"
 
+# 新增：获取单篇论文的编号、类型、完整作者
+def get_full_paper_info(arxiv_id):
+    url = f"https://arxiv.org/abs/{arxiv_id}"
+    try:
+        res = requests.get(url, timeout=10)
+        soup = BeautifulSoup(res.text, "html.parser")
+
+        # 1. 完整 arXiv 编号（带版本号）
+        full_id_tag = soup.find("div", class_="paper-id")
+        full_id = full_id_tag.text.strip() if full_id_tag else f"arXiv:{arxiv_id}"
+
+        # 2. 识别 Announce Type
+        announce_type = "new"
+        if soup.find("div", class_="announce-cross"):
+            announce_type = "cross"
+        if soup.find("div", class_="announce-replace"):
+            announce_type = "replace"
+
+        # 3. 完整作者列表
+        authors_div = soup.find("div", class_="authors")
+        authors = []
+        if authors_div:
+            for a in authors_div.find_all("a"):
+                authors.append(a.text.strip())
+        authors_str = ", ".join(authors) if authors else "Unknown"
+
+        return full_id, announce_type, authors_str
+    except:
+        return f"arXiv:{arxiv_id}", "new", ""
+
 # 获取网页原始日期
 arxiv_date = get_arxiv_original_date("hep-ex")
 print(f"📅 网页原始日期：{arxiv_date}")
 
-# ============== 从 list/new 页面抓取全部论文（含new/cross/replace）==============
-def fetch_from_list_page(category):
-    url = f"https://arxiv.org/list/{category}/new"
-    try:
-        response = requests.get(url, timeout=15)
-        soup = BeautifulSoup(response.text, "html.parser")
-    except:
-        return []
-
-    papers = []
-
-    # 先定位三个分段标题，确定每篇属于哪一类
-    h2_new = soup.find("h2", string=lambda s: s and "New Submissions" in s)
-    h2_cross = soup.find("h2", string=lambda s: s and "Cross listings" in s)
-    h2_replace = soup.find("h2", string=lambda s: s and "Replacements" in s)
-
-    # 遍历所有论文 dt
-    dts = soup.find_all("dt")
-    for dt in dts:
-        # 1. 提取 arXiv 完整编号
-        id_span = dt.find("span", class_="list-identifier")
-        if not id_span:
-            continue
-        arxiv_id = id_span.text.strip().split()[0]  # 形如 arXiv:2501.13530
-
-        # 2. 判断属于哪一类
-        announce_type = "new"
-        if h2_cross and dt.find_previous("h2") == h2_cross:
-            announce_type = "cross"
-        elif h2_replace and dt.find_previous("h2") == h2_replace:
-            announce_type = "replace"
-
-        # 3. 取下一条详情 dd
-        dd = dt.find_next_sibling("dd")
-        if not dd:
-            continue
-
-        # 4. 完整作者
-        authors = []
-        author_div = dd.find("div", class_="list-authors")
-        if author_div:
-            for a in author_div.find_all("a"):
-                authors.append(a.text.strip())
-        author_str = ", ".join(authors) if authors else "Unknown"
-
-        # 5. 标题
-        title_div = dd.find("div", class_="list-title")
-        title = title_div.text.replace("Title:", "").strip() if title_div else ""
-
-        # 6. 链接
-        link = f"https://arxiv.org/abs/{arxiv_id.split(':')[-1]}"
-
-        # 7. 摘要（严格按你要的格式）
-        abstract_p = dd.find("p", class_="list-abstract")
-        abstract_raw = abstract_p.text.replace("Abstract:", "").strip() if abstract_p else ""
-        summary = f"{arxiv_id} Announce Type: {announce_type}\n{abstract_raw}"
-
-        papers.append({
-            "title": title,
-            "author": author_str,
-            "link": link,
-            "time": arxiv_date,
-            "category": category,
-            "summary": summary
-        })
-
-    return papers
-
-# ============== 抓取 hep-ex + hep-ph 全部三类 ==============
+# ============== 保留原有的 24小时论文抓取逻辑 ==============
+now = datetime.utcnow()
+one_day_ago = now - timedelta(hours=24)
 CATEGORIES = ["hep-ex", "hep-ph"]
 
 result = {
@@ -102,11 +67,47 @@ result = {
 }
 
 for cat in CATEGORIES:
-    papers = fetch_from_list_page(cat)
+    url = f"http://export.arxiv.org/api/query?search_query=cat:{cat}&sortBy=submittedDate&sortOrder=descending&max_results=100"
+    feed = feedparser.parse(url)
+
+    papers = []
+    for entry in feed.entries:
+        try:
+            pub_time = datetime(*entry.published_parsed[:6])
+            if pub_time >= one_day_ago:
+                # 提取 arXiv ID
+                arxiv_id = entry.id.split("/")[-1]
+                # 调用函数获取完整信息
+                full_id, announce_type, full_authors = get_full_paper_info(arxiv_id)
+
+                # 保留原有字段，只修改 author 和 summary
+                title = entry.get("title", "").strip()
+                link = entry.get("link", "")
+                pub_time_str = entry.get("published", "")
+
+                # 修复作者字段：用完整作者列表
+                author = full_authors if full_authors else entry.get("author", "")
+
+                # 修复 summary 字段：按你的格式
+                summary_raw = entry.get("summary", "").strip()
+                summary = f"{full_id} Announce Type: {announce_type}\n{summary_raw}"
+
+                papers.append({
+                    "title": title,
+                    "author": author,
+                    "link": link,
+                    "time": pub_time_str,
+                    "category": cat,
+                    "summary": summary
+                })
+        except Exception as e:
+            print(f"⚠️ 处理论文出错: {e}")
+            continue
+
     result[cat] = papers
     print(f"✅ {cat} 抓到：{len(papers)} 篇")
 
-# ============== 写入原路径 ==============
+# ============== 完全保留原有的写入逻辑 ==============
 with open("output/data.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
