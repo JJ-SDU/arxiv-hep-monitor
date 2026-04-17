@@ -3,119 +3,97 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
-# 创建输出目录
 os.makedirs("output", exist_ok=True)
 
-# ============== 获取网页日期 ==============
-def get_arxiv_original_date(category="hep-ex"):
+def fetch_papers(category):
     url = f"https://arxiv.org/list/{category}/new"
     try:
-        response = requests.get(url, timeout=10)
-        soup = BeautifulSoup(response.text, "html.parser")
-        h3 = soup.find("h3", string=lambda t: t and "Showing new listings for" in t)
-        if h3:
-            return h3.text.replace("Showing new listings for ", "").strip()
-    except:
-        pass
-    return "No date"
-
-# ============== 抓取一个 list/new 页面全部文章 ==============
-def fetch_all_from_list(category):
-    url = f"https://arxiv.org/list/{category}/new"
-    try:
-        response = requests.get(url, timeout=15)
-        soup = BeautifulSoup(response.text, "html.parser")
-    except:
+        resp = requests.get(url, timeout=20)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+    except Exception as e:
+        print(f"❌ 请求 {url} 失败: {e}")
         return []
 
     papers = []
-    current_announce = ""
+    dts = soup.find_all("dt")
+    dds = soup.find_all("dd")
 
-    for tag in soup.find_all():
-        # 识别 announce type 区域
-        if tag.name == "h2":
-            txt = tag.get_text(strip=True).lower()
-            if "new submissions" in txt:
-                current_announce = "new"
-            elif "cross listings" in txt:
-                current_announce = "cross-list"
-            elif "replacements" in txt:
-                current_announce = "replacement"
+    if len(dts) != len(dds):
+        print(f"⚠️ {category} 中 dt/dd 数量不匹配")
+
+    for i, dt in enumerate(dts):
+        dd = dds[i] if i < len(dds) else None
+        if not dd:
             continue
 
-        # 抓取每一篇论文 dt
-        if tag.name == "dt" and tag.find("span", class_="list-identifier"):
-            id_span = tag.find("span", class_="list-identifier")
-            if not id_span:
-                continue
+        # 1. arXiv 编号
+        id_span = dt.find("span", class_="list-identifier")
+        if not id_span:
+            continue
+        arxiv_num = id_span.text.strip().split()[0]
 
-            # 1. 提取 arXiv 完整编号（例如 arXiv:2604.14716）
-            arxiv_number = id_span.find("a").get_text(strip=True)
+        # 2. Announce type（从括号里取）
+        announce_type = ""
+        sup_tag = id_span.find("sup")
+        if sup_tag:
+            announce_type = sup_tag.text.strip("()")
 
-            # 2. 提取括号里的 announce type 原文（例如 cross-list from astro-ph.HE）
-            announce_type = ""
-            sup_text = id_span.find("sup")
-            if sup_text:
-                announce_type = sup_text.get_text(strip=True).strip("()")
+        # 3. 标题
+        title_tag = dd.find("div", class_="list-title")
+        title = title_tag.text.replace("Title:", "").strip() if title_tag else ""
 
-            dd = tag.find_next_sibling("dd")
-            if not dd:
-                continue
+        # 4. 作者（完整列表）
+        authors = []
+        author_div = dd.find("div", class_="list-authors")
+        if author_div:
+            for a in author_div.find_all("a"):
+                authors.append(a.text.strip())
+        author_str = ", ".join(authors) if authors else "Unknown"
 
-            # 3. 完整作者列表（修复）
-            authors = []
-            auth_div = dd.find("div", class_="list-authors")
-            if auth_div:
-                for a in auth_div.find_all("a"):
-                    authors.append(a.get_text(strip=True))
-            author_str = ", ".join(authors) if authors else "Unknown"
+        # 5. 链接
+        link = f"https://arxiv.org/abs/{arxiv_num.split(':')[-1]}"
 
-            # 4. 标题
-            title = ""
-            title_div = dd.find("div", class_="list-title")
-            if title_div:
-                title = title_div.get_text(strip=True).replace("Title:", "").strip()
+        # 6. 摘要（修复空摘要问题）
+        abstract_tag = dd.find("p", class_="list-abstract")
+        summary = abstract_tag.text.replace("Abstract:", "").strip() if abstract_tag else ""
 
-            # 5. 链接
-            link = f"https://arxiv.org/abs/{arxiv_number.replace('arXiv:', '')}"
-
-            # 6. 摘要（彻底修复空摘要问题）
-            summary = ""
-            abs_p = dd.find("p", class_="list-abstract")
-            if abs_p:
-                summary = abs_p.get_text(strip=True).replace("Abstract:", "").strip()
-
-            # 7. 最终字段（去掉 time，增加 arXiv number + Announce type）
-            papers.append({
-                "title": title,
-                "author": author_str,
-                "link": link,
-                "arXiv number": arxiv_number,        # 新增
-                "Announce type": announce_type,      # 新增
-                "category": category,
-                "summary": summary                   # 修复不空
-            })
-
+        papers.append({
+            "title": title,
+            "author": author_str,
+            "link": link,
+            "arXiv number": arxiv_num,
+            "Announce type": announce_type,
+            "category": category,
+            "summary": summary
+        })
     return papers
 
-# ============== 主程序 ==============
-CATEGORIES = ["hep-ex", "hep-ph"]
-arxiv_date = get_arxiv_original_date("hep-ex")
+if __name__ == "__main__":
+    categories = ["hep-ex", "hep-ph"]
+    result = {
+        "date": "",
+        "hep-ex": [],
+        "hep-ph": []
+    }
 
-result = {
-    "date": arxiv_date,
-    "hep-ex": [],
-    "hep-ph": []
-}
+    # 取第一个页面的日期
+    try:
+        date_url = "https://arxiv.org/list/hep-ex/new"
+        date_resp = requests.get(date_url, timeout=10)
+        date_soup = BeautifulSoup(date_resp.text, "html.parser")
+        h3 = date_soup.find("h3", string=lambda t: t and "Showing new listings for" in t)
+        if h3:
+            result["date"] = h3.text.replace("Showing new listings for ", "").strip()
+    except:
+        result["date"] = "Unknown"
 
-for cat in CATEGORIES:
-    papers = fetch_all_from_list(cat)
-    result[cat] = papers
-    print(f"✅ {cat} 抓取完成：{len(papers)} 篇")
+    for cat in categories:
+        papers = fetch_papers(cat)
+        result[cat] = papers
+        print(f"✅ {cat} 抓取完成：{len(papers)} 篇")
 
-# ============== 输出文件 ==============
-with open("output/data.json", "w", encoding="utf-8") as f:
-    json.dump(result, f, ensure_ascii=False, indent=2)
+    with open("output/data.json", "w", encoding="utf-8") as f:
+        json.dump(result, f, ensure_ascii=False, indent=2)
 
-os.utime("output/data.json", None)
-print("\n🎉 全部抓取完成！")
+    print("\n🎉 全部抓取完成！")
