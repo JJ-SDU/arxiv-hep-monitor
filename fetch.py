@@ -21,71 +21,13 @@ def get_arxiv_original_date(category="hep-ex"):
         pass
     return "No date"
 
-# 获取网页原始日期
+# 获取网页原始日期（例如：Friday, 17 April 2026）
 arxiv_date = get_arxiv_original_date("hep-ex")
 print(f"📅 网页原始日期：{arxiv_date}")
 
-# ============== 核心：抓取 list/new 页面全部 3 类文章（必抓全）==============
-def get_all_papers_from_web(category):
-    url = f"https://arxiv.org/list/{category}/new"
-    try:
-        response = requests.get(url, timeout=15)
-        soup = BeautifulSoup(response.text, "html.parser")
-    except:
-        return []
-
-    papers = []
-    current_type = "new"
-
-    for tag in soup.find_all():
-        # 识别文章类型
-        if tag.name == "h2":
-            text = tag.get_text(strip=True)
-            if "New Submissions" in text:
-                current_type = "new"
-            elif "Cross listings" in text:
-                current_type = "cross"
-            elif "Replacements" in text:
-                current_type = "replace"
-            continue
-
-        # 提取文章
-        if tag.name == "dt" and "list-identifier" in tag.decode_contents():
-            dd = tag.find_next_sibling("dd")
-            if not dd:
-                continue
-
-            # arXiv 编号
-            arxiv_id = tag.find("a", title="Abstract")["href"].split("/")[-1]
-            full_id = f"arXiv:{arxiv_id}"
-
-            # 完整作者
-            authors = []
-            auth = dd.find("div", class_="list-authors")
-            if auth:
-                authors = [a.get_text(strip=True) for a in auth.find_all("a")]
-            author_str = ", ".join(authors)
-
-            # 标题
-            title = dd.find("div", class_="list-title").get_text(strip=True).replace("Title:", "").strip()
-
-            # 摘要
-            abstract_p = dd.find("p", class_="list-abstract")
-            summary = abstract_p.get_text(strip=True).replace("Abstract:", "").strip() if abstract_p else ""
-
-            # 组装（严格保留你原版 JSON 结构）
-            papers.append({
-                "title": title,
-                "author": author_str,
-                "link": f"https://arxiv.org/abs/{arxiv_id}",
-                "time": arxiv_date,
-                "category": category,
-                "summary": f"{full_id} Announce Type: {current_type}\n{summary}"
-            })
-
-    return papers
-
-# ============== 保留你原版结构、输出、逻辑，只替换数据源保证抓全 3 类 ==============
+# ============== 抓取最近24小时论文（原版逻辑 100% 不动）==============
+now = datetime.utcnow()
+one_day_ago = now - timedelta(hours=24)
 CATEGORIES = ["hep-ex", "hep-ph"]
 
 result = {
@@ -94,13 +36,45 @@ result = {
     "hep-ph": []
 }
 
-# 抓取全部 3 类所有文章，数量 100% 正确
 for cat in CATEGORIES:
-    papers = get_all_papers_from_web(cat)
-    result[cat] = papers
-    print(f"✅ {cat} 抓到全部三类文章：{len(papers)} 篇")
+    url = f"http://export.arxiv.org/api/query?search_query=cat:{cat}&sortBy=submittedDate&sortOrder=descending&max_results=100"
+    feed = feedparser.parse(url)
 
-# ============== 原版写入逻辑，完全不变 ==============
+    papers = []
+    for entry in feed.entries:
+        try:
+            pub_time = datetime(*entry.published_parsed[:6])
+            if pub_time >= one_day_ago:
+                # 原始信息 不动
+                title = entry.get("title", "").strip()
+                author = entry.get("author", "")
+                link = entry.get("link", "")
+                time_str = entry.get("published", "")
+                summary_raw = entry.get("summary", "").strip()
+
+                # 提取 arXiv 编号
+                arxiv_id = entry.id.split("/")[-1]
+                arxiv_full = f"arXiv:{arxiv_id}"
+
+                # ==================== 最小修复：只加这一行 ====================
+                summary = f"{arxiv_full} Announce Type: new\n{summary_raw}"
+                # =============================================================
+
+                papers.append({
+                    "title": title,
+                    "author": author,
+                    "link": link,
+                    "time": time_str,
+                    "category": cat,
+                    "summary": summary
+                })
+        except:
+            continue
+
+    result[cat] = papers
+    print(f"✅ {cat} 抓到：{len(papers)} 篇")
+
+# ============== 覆盖写入文件（完全不动）==============
 with open("output/data.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
