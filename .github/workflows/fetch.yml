@@ -2,9 +2,9 @@ name: Fetch arXiv hep-th & hep-ex (JJ-SDU)
 
 on:
   schedule:
-    - cron: '10 1 * * 1-5'   # 北京时间 上午 9:10
-    - cron: '0 2 * * 1-5'    # 北京时间 上午 10:00
-    - cron: '0 6 * * 1-5'    # 北京时间 下午 2:00
+    - cron: '10 1 * * 1-5'
+    - cron: '0 2 * * 1-5'
+    - cron: '0 6 * * 1-5'
   workflow_dispatch:
 
 jobs:
@@ -28,19 +28,12 @@ jobs:
 
       - name: Run fetch script
         run: |
-          echo "=== 脚本运行前状态 ==="
-          ls -la output/
           python fetch.py
-          echo "=== 脚本运行后状态 ==="
-          ls -la output/
-          cat output/data.json | head -20
 
-      # 用官方推荐的 add-and-commit Action，稳定可靠
-      - name: Commit and push data.json
+      - name: Commit and push
         uses: EndBug/add-and-commit@v9
         with:
           author_name: github-actions[bot]
           author_email: github-actions[bot]@users.noreply.github.com
-          message: "Auto-update data [skip ci] - $(date +'%Y-%m-%d %H:%M:%S')"
-          add: "output/data.json"  # 只提交这个文件
-          push: true
+          message: "Auto-update today's papers [skip ci] - $(date +'%Y-%m-%d %H:%M')"
+          add: "output/data.json"
