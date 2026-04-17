@@ -13,13 +13,9 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
 
       - name: Install dependencies
         run: |
@@ -27,13 +23,12 @@ jobs:
           pip install feedparser requests
 
       - name: Run fetch script
-        run: |
-          python fetch.py
+        run: python fetch.py
 
-      - name: Commit and push
+      - name: Commit & Push
         uses: EndBug/add-and-commit@v9
         with:
           author_name: github-actions[bot]
           author_email: github-actions[bot]@users.noreply.github.com
-          message: "Auto-update today's papers [skip ci] - $(date +'%Y-%m-%d %H:%M')"
+          message: "Auto-update today's papers [skip ci]"
           add: "output/data.json"
