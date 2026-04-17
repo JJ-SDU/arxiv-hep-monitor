@@ -50,18 +50,26 @@ jobs:
             exit 1  # 终止流程，便于发现脚本问题
           fi
 
-      # 提交并推送文件（增加拉取步骤，避免冲突）
+      # 提交并推送文件（调整顺序，解决冲突）
       - name: Commit and push data.json
         run: |
           # 配置git用户信息
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          # 拉取最新代码（避免远程有更新导致推送失败）
-          git pull origin ${{ github.ref }} --rebase
-          # 添加文件
+          
+          # 先暂存修改（关键！解决unstaged changes问题）
           git add output/data.json
-          # 提交（带时间戳，便于排查；无变更时提示）
-          git commit -m "Auto-update data [skip ci] - $(date +'%Y-%m-%d %H:%M:%S')" || echo "⚠️ 无变更可提交"
-          # 推送代码
-          git push origin ${{ github.ref }}
-          echo "✅ 推送完成！"
+          
+          # 拉取最新代码（先暂存再拉取，避免冲突）
+          git pull origin ${{ github.ref }} --rebase
+          
+          # 检查是否有变更
+          if git diff --cached --quiet; then
+            echo "⚠️  无变更可提交，跳过推送"
+          else
+            # 提交（带时间戳，便于排查）
+            git commit -m "Auto-update data [skip ci] - $(date +'%Y-%m-%d %H:%M:%S')"
+            # 推送代码
+            git push origin ${{ github.ref }}
+            echo "✅ 推送完成！"
+          fi
