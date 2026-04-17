@@ -1,4 +1,134 @@
 {
-  "hep-ex": [],
-  "hep-ph": []
+  "hep-ex": [
+    {
+      "title": "Rare and very rare decays at the LHCb experiment",
+      "author": "Hanae Tilquin",
+      "link": "https://arxiv.org/abs/2604.15199v1",
+      "time": "2026-04-16T16:26:55Z",
+      "category": "hep-ex",
+      "summary": "Rare and very rare decays of third-generation particles, including $b$-hadrons and $τ$ leptons, provide sensitive probes of physics beyond the Standard Model (SM). Unlike direct searches limited by collider energies, they probe new physics at much higher energy scales. Many of these decays have SM-predicted branching fractions below the sensitivity of current detectors. These proceedings report on recent LHCb searches, including several first searches and results setting the most stringent limits to date. In particular, searches for $b \\to s τ^+τ^-$, $b \\to s τ^\\pm e^\\mp$, $b \\to s μ^\\pm e^\\mp$, and $τ^- \\to μ^-μ^+μ^-$ are presented, alongside searches for lepton-number-violating processes and loop-suppressed annihilation decays."
+    },
+    {
+      "title": "Searches for New Physics at High Object Masses with CMS",
+      "author": "Andrea Malara",
+      "link": "https://arxiv.org/abs/2604.15049v1",
+      "time": "2026-04-16T14:12:30Z",
+      "category": "hep-ex",
+      "summary": "Searches at high object masses probe both resonant production of new particles and nonresonant distortions of Standard Model spectra. This contribution follows the material presented in the Moriond Electroweak 2026 talk and summarizes recent CMS results in this regime: the Run~2 combination of heavy vector boson searches, the Run~3 search for $W^\\prime \\to \\ell ν$, the Run~2 dijet angular analysis, and searches for pair-produced dijet resonances in inclusive and $b$-tagged final states. No significant deviation from the SM expectation is observed, and the new results extend the sensitivity of CMS to multi-TeV scales in several benchmark scenarios."
+    },
+    {
+      "title": "Study of the $B^0 \\to Λ_c^+ \\barΛ_c^- K_S^0$ decay",
+      "author": "G. Zunica",
+      "link": "https://arxiv.org/abs/2604.15040v1",
+      "time": "2026-04-16T14:07:45Z",
+      "category": "hep-ex",
+      "summary": "The decay $B^0 \\to Λ_c^+ \\barΛ_c^- K_S^0$ is studied at LHCb for the first time using proton-proton collision data recorded by the LHCb experiment at a center-of-mass energy of $\\sqrt{s} = 13$ TeV, corresponding to an integrated luminosity of 5.4 fb$^{-1}$. The branching ratio relative to the decay $B^+ \\to Λ_c^+ \\barΛ_c^- K^+$ is measured to be\n  $$ \\frac{{\\cal B}(B^0 \\to Λ_c^+ \\barΛ_c^- K_S^0)}{{\\cal B}(B^+ \\to Λ_c^+ \\barΛ_c^- K^+)} = 0.53 \\pm 0.05 \\pm 0.05, $$ where the first uncertainty is statistical and the second is systematic. Evidence is found for contributions from two resonant states, $Ξ_c(2923)^+$ and $Ξ_c(2939)^+$, in the $Λ_c^+ K_S^0$ system. The two states show a significance of $3.9σ$ relative to the nonresonant hypothesis. These two $Ξ_c^+$ states are consistent with being the isospin partners of the states observed in $Λ_c^+ K^-$ system."
+    },
+    {
+      "title": "Glauber-Lachs formula-based analysis of three-pion Bose-Einstein correlation data at 7 TeV from the LHCb Collaboration",
+      "author": "Minoru Biyajima",
+      "link": "https://arxiv.org/abs/2604.15011v1",
+      "time": "2026-04-16T13:39:05Z",
+      "category": "hep-ex",
+      "summary": "We combine the Glauber--Lachs formula from quantum optics and the two-component picture for pion production to analyze data on two- and three-pion Bose--Einstein correlation at 7 TeV from the LHCb Collaboration. For the pion exchange function $E_{\\rm 2B}$, we chose a dipole form and an inverse one-and-a-half pole form. The extensions are computed in the configuration space of 4-dimensional Euclidean space ($ξ=\\sqrt{|\\bm r_1-\\bm r_2|^2+(t_1-t_2)^2}$)."
+    }
+  ],
+  "hep-ph": [
+    {
+      "title": "Neutrino self-interactions in post-reionization era: Lyman-$α$, 21-cm and cross-spectra",
+      "author": "Supratik Pal",
+      "link": "https://arxiv.org/abs/2604.15287v1",
+      "time": "2026-04-16T17:52:56Z",
+      "category": "hep-ph",
+      "summary": "Neutrino self-interactions delay the onset of free-streaming in the early universe, leaving distinct, scale-dependent signatures on the matter power spectrum. We investigate these signatures in post-reionization 21-cm intensity mapping and the Lyman-$α$ (Ly$α$) forest at redshifts $z \\sim 2$--$3.5$, and forecast the constraints achievable with upcoming surveys using Fisher matrix analysis. Modeling neutrino self-interactions through an effective four-fermion parameterization with coupling $G_{\\rm eff}$, we compute modifications to the Ly$α$ and 21-cm auto- and cross-power spectra for both strongly interacting (SI$_ν$, $\\log_{10}G_{\\mathrm{eff}} = -1.77$) and moderately interacting (MI$_ν$, $\\log_{10}G_{\\mathrm{eff}} = -5$) scenarios. We then combine these with forecasts for a representative next-generation cosmic microwave background (CMB) mission to evaluate the capabilities of SKA1-Mid and PUMA. We find that the Ly$α$--21-cm cross-correlation provides a systematics-resilient probe of the interaction signal, and decisively breaks the degeneracy between the primordial scalar power spectrum amplitude ($A_s$) and $G_{\\rm eff}$ that limits CMB only analysis, particularly for the SI$_ν$ mode. Furthermore, the CMB+PUMA combination emerges as the optimal survey configuration for both regimes, reaching 1$σ$ constraints of $\\mathcal{O}(10^{-3})$ on $σ(\\log_{10}G_{\\rm eff})$ for the SI$_ν$ mode and $\\mathcal{O}(10^{-2})$ for the MI$_ν$ mode. Compared to the CMB-only baseline, this represents an improvement of approximately one order of magnitude for the SI$_ν$ mode, and nearly two orders of magnitude for the MI$_ν$ mode. We show that this conclusion holds uniformly over the full range of coupling strengths from $\\log_{10}G_{\\rm eff} = -6$ to $-1.77$."
+    },
+    {
+      "title": "Charmonium radiative transitions to dileptons from lattice QCD: The case of $h_c \\to η_c \\ell^+\\ell^-$ and $χ_{c1} \\to J/ψ\\,\\ell^+\\ell^-$",
+      "author": "N. Tantalo",
+      "link": "https://arxiv.org/abs/2604.15256v1",
+      "time": "2026-04-16T17:34:29Z",
+      "category": "hep-ph",
+      "summary": "We present a lattice QCD study of dilepton production in charmonium transitions, specifically focusing on the $1^{+-} \\to 0^{-+}$ and $1^{++} \\to 1^{--}$ processes: $h_c \\to η_c \\ell^+ \\ell^-$ and $χ_{c1} \\to J/ψ\\ell^+ \\ell^-$, where $\\ell = e, μ$. The relevant hadronic matrix elements are computed using gauge field configurations generated by the Extended Twisted Mass Collaboration with $N_f = 2+1+1$ dynamical Wilson--Clover twisted-mass fermions at four lattice spacings. Simulations are performed at physical dynamical $u$, $d$, $s$, and $c$ quark masses, except for the coarsest lattice, where the lightest sea quark mass corresponds to a slightly heavier pion mass. A controlled continuum extrapolation is carried out. In the continuum limit for the $h_c$ decays, we obtain $Γ(h_c \\to η_c e^+ e^-) = 5.45(19)~\\mathrm{keV}$, and $Γ(h_c \\to η_c μ^+ μ^-) = 0.635(22)~\\mathrm{keV}$. For the $χ_{c1}$ decays, we find: $Γ(χ_{c1} \\to J/ψe^+ e^-)= 2.869(90)~\\mathrm{keV}$, and $Γ(χ_{c1} \\to J/ψμ^+ μ^-) = 0.1993(72)~\\mathrm{keV}$. Our results for the $χ_{c1}$ decays show good compatibility with experimental data. However, our prediction for the $h_c \\to η_c e^+ e^- $ decay rate is approximately $3σ$ larger than the BESIII result. We also present predictions for the differential decay widths as functions of the dilepton invariant mass, $q^2$, and for angular observables sensitive to longitudinal transition form factors, which are inaccessible in radiative decays with real photon emission. These results constitute the first fully dynamical lattice QCD predictions for dilepton decay rates in $h_c$ and $χ_{c1}$ charmonium transitions, including their differential distributions and angular observables. They provide benchmark predictions for future experimental studies."
+    },
+    {
+      "title": "Echoes of Global Cosmic Strings",
+      "author": "Antonios Kyriazis",
+      "link": "https://arxiv.org/abs/2604.15241v1",
+      "time": "2026-04-16T17:16:56Z",
+      "category": "hep-ph",
+      "summary": "If the Universe underwent a cosmic phase transition, it may have left behind a network of cosmic strings. When these strings arise from the breaking of a gauge symmetry, their decay produces a significant stochastic background of gravitational waves. In contrast, if they originate from the breaking of a global symmetry, their decay predominantly yields Nambu-Goldstone bosons, which can persist as dark matter or dark radiation. In this work, we assess the detectability of this particle spectrum using a range of cosmological probes. We employ semi-numerical methods to estimate the resulting energy density and compute the associated matter power spectrum. We then compare these predictions with observations of the cosmic microwave background, Lyman-$α$ forest, large-scale structure surveys, and the UV luminosity function, thereby deriving constraints on the Nambu-Goldstone boson mass and the symmetry-breaking scale. Finally, we present projections for the sensitivity of upcoming cosmic microwave background missions."
+    },
+    {
+      "title": "Dilaton-Flattened Axion Inflation",
+      "author": "Mussawir Khan",
+      "link": "https://arxiv.org/abs/2604.15194v1",
+      "time": "2026-04-16T16:24:18Z",
+      "category": "hep-ph",
+      "summary": "We present a solvable same-sector effective theory for anomaly-inspired axion inflation, in which a heavy trace-anomaly mode dynamically backreacts on the axion potential. The tree-level elimination of the radial field resums the backreaction into a closed-form Lambert-$W$ potential, naturally flattening the hilltop potential without external plateau operators. By deriving the exact trough metric, we evaluate all the observables on the fully reduced one-field action, bypassing uncontrolled kinetic approximations. Calibrated at $N_\\star=56$, reheating-compatible branches yield $r\\simeq0.033$--$0.036$ and $α_s\\simeq-(4.6$--$4.7)\\times10^{-4}$, comfortably satisfying the current ACT/SPT/BICEP constraints. The evolution remains strictly adiabatic ($m_\\perp^2/H^2\\gtrsim6.1$, $Ω/H\\lesssim7.6\\times10^{-4}$) with negligible sound-speed and metric corrections. We provide analytic control over the constant-$w_{\\rm eff}$ reheating map, the $N_{\\rm re}=0$ boundary, and robustness against vacuum-offset deformations. This Lambert-$W$ backbone establishes a precise, deformable benchmark for confining axion inflation, with microscopic matching and reheating microphysics accessible as systematic EFT refinements."
+    },
+    {
+      "title": "Symmetry Preserving Contact Interaction Approaches: An Overview of Meson and Diquark Form Factors",
+      "author": "Roger José Hernández-Pinto",
+      "link": "https://arxiv.org/abs/2604.15122v1",
+      "time": "2026-04-16T15:10:25Z",
+      "category": "hep-ph",
+      "summary": "We present an updated overview of the symmetry preserving Contact Interaction model in hadronic physics, developed a little over a decade ago to describe the mass spectrum and internal structure of mesons and diquarks composed of light and heavy quarks. Over the years, the Contact Interaction has evolved into a framework capable of treating both ground and excited states, providing a simple yet consistent approach to nonperturbative QCD. In this review, we examine the mass spectrum and elastic form factors of forty mesons with different spins and parities, together with their corresponding diquark partners. Importantly, we update the comparison of Contact Interaction predictions using recent results from the literature, offering a fresh perspective on the model's performance, strengths, and limitations. The analysis presented here refines previous conclusions and supports the Contact Interaction as a practical tool for hadron structure studies, with potential applications to baryons and multiquark states. We also present comparisons with other theoretical models and approaches, including lattice quantum chromodynamics, and comment on future prospects in view of ongoing and planned hadron structure experimental programs.\n  In particular, forthcoming measurements at FAIR, together with future studies at Jefferson Lab and the Electron Ion Collider, are expected to provide key insights into hadron structure, with FAIR offering indirect constraints via hadron spectroscopy, hadronic interactions, and in-medium properties, while high-precision data on meson structure and form factors from Jefferson Lab and the Electron Ion Collider will provide valuable benchmarks to confront Contact Interaction based predictions."
+    },
+    {
+      "title": "General Static Solutions of the SU(2) Yang-Mills Equations from a Spin Vector Potential",
+      "author": "Jing-Ling Chen",
+      "link": "https://arxiv.org/abs/2604.15110v1",
+      "time": "2026-04-16T15:04:21Z",
+      "category": "hep-ph",
+      "summary": "We present a systematic study of static solutions to the source-free SU(2) Yang-Mills equations, in which the gauge potential explicitly depends on spin operators. By employing the \\emph{vector potential extraction approach} (VPEA) -- which requires the total angular momentum operator (orbital plus spin) to satisfy the standard angular momentum algebra -- we derive the most general form of the spin vector potential. This leads to the static ansatz $\\{ \\vec{A} = [k_1(\\hat{r}\\times\\vecΓ) + k_2\\vecΓ + k_3(\\vecΓ\\cdot\\hat{r})\\hat{r}]/r, \\varphi = f_1(r)\\,(\\vecΓ\\cdot\\hat{r}) + f_2(r)\\}$, parametrized by three constants $\\{k_1, k_2, k_3\\}$ and two radial functions $\\{f_1(r), f_2(r)\\}$. Substituting this ansatz into the Yang-Mills equations and imposing the angular momentum constraints from the VPEA yields a set of consistency equations. Solving these equations provides a complete classification of static solutions, including both real and complex families. Known simple SU(2) static solutions are recovered as special cases. Our classification reveals new static configurations that could be valuable for non-perturbative studies and for models where spin degrees of freedom couple to non-Abelian gauge fields."
+    },
+    {
+      "title": "Production of doubly heavy quarkonium associated with two heavy quarks via top quark decays",
+      "author": "Hong-Hao Ma",
+      "link": "https://arxiv.org/abs/2604.15015v1",
+      "time": "2026-04-16T13:42:42Z",
+      "category": "hep-ph",
+      "summary": "In this paper, we analyze the $1 \\rightarrow 4$ decay channel for the production of doubly heavy quarkonium, $(b\\bar{c})$ or $(c\\bar{c})$, via top-quark decays, $t \\to (b\\bar{c}) + c + c + \\bar{s}$ and $t \\to (c\\bar{c}) + b + c + \\bar{s}$, within the framework of nonrelativistic QCD (NRQCD). The dominant contributions are considered in color-singlet S-wave states, i.e., $(b\\bar{c})[^1S_0]$, $(b\\bar{c})[^3S_1]$, $(c\\bar{c})[^1S_0]$, and $(c\\bar{c})[^3S_1]$. Our calculations show that the decay widths for $\\bar{B_{c}}$, $\\bar{B_{c}^{*}}$, $J/ψ$ and $η_{c}$ production are 0.2251, 0.3099, 0.0537 and 0.0555 MeV, respectively, resulting in ${\\cal O}(10^{4}\\text{--}10^{6})$ level of $\\bar{B}_c^{(*)}$ events and ${\\cal O}(10^{3}\\text{--}10^{5})$ level of charmonium produced at LHC per year. In particular, we find that the dominant contribution to $J/ψ$ and $η_{c}$ production via top-quark decays arises from this decay channel proposed in this work. Moreover, this multi-body top-quark decay process can serve as a sensitive probe for validating the narrow-width approximation (NWA). Finally, we provide a detailed analysis of theoretical uncertainties and differential distributions to facilitate the corresponding experimental searches. The production of a hadron associated with three quarks contains rich physical information, providing new insights for the LHC to study $B_c$ mesons and charmonia."
+    },
+    {
+      "title": "Glauber-Lachs formula-based analysis of three-pion Bose-Einstein correlation data at 7 TeV from the LHCb Collaboration",
+      "author": "Minoru Biyajima",
+      "link": "https://arxiv.org/abs/2604.15011v1",
+      "time": "2026-04-16T13:39:05Z",
+      "category": "hep-ph",
+      "summary": "We combine the Glauber--Lachs formula from quantum optics and the two-component picture for pion production to analyze data on two- and three-pion Bose--Einstein correlation at 7 TeV from the LHCb Collaboration. For the pion exchange function $E_{\\rm 2B}$, we chose a dipole form and an inverse one-and-a-half pole form. The extensions are computed in the configuration space of 4-dimensional Euclidean space ($ξ=\\sqrt{|\\bm r_1-\\bm r_2|^2+(t_1-t_2)^2}$)."
+    },
+    {
+      "title": "Cosmology of Inelastic Self-Interacting Dark Matter: Linear Evolution and Observational Constraints",
+      "author": "Ziwei Wang",
+      "link": "https://arxiv.org/abs/2604.15006v1",
+      "time": "2026-04-16T13:33:16Z",
+      "category": "hep-ph",
+      "summary": "We study the linear cosmological evolution of inelastic self-interacting dark matter in a two-component dark sector with a small mass splitting, assuming thermal initial conditions for the two species. We derive the coupled background and perturbation equations for inelastic conversion between the two species, considering both Power-law and Low-velocity saturation cross sections. Exothermic conversion injects kinetic energy into the light component, generating pressure support that suppresses small-scale structure and produces dark acoustic oscillations in the matter power spectrum. The resulting cutoff at scale $k > 1\\,h\\,\\mathrm{Mpc}^{-1}$ depends on the normalization and velocity dependence of the cross section, the dark matter mass and the mass splitting. Using linear power spectra computed with a modified Boltzmann solver, we apply recast constraints from Lyman-$α$ forest data and high-redshift UV luminosity functions, finding non-monotonic but closed exclusion regions driven by the competition between efficient conversion and rapid depletion of the heavy component. These results show that the internal thermodynamics of a secluded multi-component dark sector can leave observable imprints on structure formation, providing a complementary probe of dark matter beyond Standard Model interactions."
+    },
+    {
+      "title": "Phenomenology of Vanishing Effective Majorana Mass with a Sterile Neutrino under Cosmological and JUNO Constraints",
+      "author": "Surender Verma",
+      "link": "https://arxiv.org/abs/2604.14983v1",
+      "time": "2026-04-16T13:15:46Z",
+      "category": "hep-ph",
+      "summary": "In the present work we investigate the phenomenological implications of a vanishing effective Majorana neutrino mass within a $3+1$ neutrino framework adding a eV-scale sterile neutrino beside three active neutrino states in light of latest cosmology driven bounds on sum of neutrino masses ($\\sum_{i}m_i$). We explore the parameter space where the destructive interference between active and sterile states leads to vanishing amplitude, $M_{ee}$, of neutrinoless double beta ($0νββ$) decay. The allowed parameter space has been identified and predictions have been obtained taking into account the latest Planck and DESI+CMB bound on $\\sum_{i}m_i$. We find that these bounds restrict the sterile mixing angle $θ_{14}$ and the lightest active neutrino mass. Furthermore, we incorporate the refined precision data from JUNO experiment regarding solar oscillation parameters ($θ_{12}, Δm_{21}^2$). We find that the sterile neutrino parameters like $θ_{14}$ may not be sensitive to the JUNO precision measurements as the constraint imposed by precise $θ_{12}$ is washed out by new cancellations driven through additional CP violating phases leading to vanishing $|M_{ee}|$."
+    },
+    {
+      "title": "Status of the hadronic light-by-light contribution to the muon $g-2$ and holographic QCD predictions",
+      "author": "Jonas Mager",
+      "link": "https://arxiv.org/abs/2604.14891v1",
+      "time": "2026-04-16T11:30:36Z",
+      "category": "hep-ph",
+      "summary": "We review the recent progress made with regard to the hadronic light-by-light (HLbL) contribution to the Standard Model prediction of the muon anomalous magnetic moment and how well this compares with predictions from holographic QCD models, which had predicted larger contributions from axial vector mesons and short-distance constraints than the White Paper of 2020. A new holographic prediction concerns tensor-meson contributions, which in holographic QCD play a significant role in short-distance constraints beyond the Melnikov-Vainshtein constraint. When matching also the symmetric longitudinal short-distance constraint, the resulting prediction for the tensor-meson transition form factors agree well with available singly virtual data, but lead to different results than the traditional quark-model ansatz and a sizable positive contribution that could explain the remaining current tension between lattice and data-driven results for the HLbL contribution."
+    },
+    {
+      "title": "Microscopic primordial black holes as macroscopic dark matter from large extra dimensions",
+      "author": "Luca Visinelli",
+      "link": "https://arxiv.org/abs/2604.14871v1",
+      "time": "2026-04-16T11:01:51Z",
+      "category": "hep-ph",
+      "summary": "We study the coupled cosmological evolution of primordial black holes (PBHs) and radiation in the Arkani-Hamed-Dimopoulos-Dvali (ADD) framework with $n$ large extra dimensions and a fundamental gravity scale $M_\\star$ at the TeV scale. For PBHs with horizon radius smaller than the compactification scale, the higher-dimensional geometry implies a larger horizon size at fixed mass and therefore a suppressed Hawking temperature. As a result, radiation accretion can overcome evaporation in the early Universe and drive a ``runaway'' phase of rapid mass growth. By numerically solving the coupled mass and energy-density evolution equations, we show that for $n \\geq 2$ initially microscopic PBHs with initial mass $M_i \\gtrsim 10^{12}\\,$g can grow by many orders of magnitude and potentially reach macroscopic, even solar-mass, scales by matter-radiation equality. We determine the critical initial abundance $β_{\\rm crit}$ required for PBHs to account for the observed dark matter density and find that extra dimensions dramatically lower this threshold, allowing viable scenarios with $β_{\\rm crit}\\sim 10^{-44}$. This identifies a previously unexplored region of parameter space in which the dark matter abundance is achieved through dynamical mass growth rather than large initial collapse fractions."
+    }
+  ]
 }
