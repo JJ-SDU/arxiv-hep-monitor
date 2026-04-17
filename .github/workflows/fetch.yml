@@ -28,20 +28,21 @@ jobs:
 
       - name: Run fetch script
         run: |
+          echo "当前工作目录：$(pwd)"
+          echo "运行前文件状态："
+          ls -la output/
           python fetch.py
-          if [ -f "output/data.json" ]; then
-            echo "✅ data.json 文件生成成功！"
-          else
-            echo "❌ 错误：output/data.json 文件未生成！"
-            exit 1
-          fi
+          echo "运行后文件状态："
+          ls -la output/
+          cat output/data.json | head -20  # 打印文件开头，确认内容
 
-      # 直接用现成的 Action 提交推送，自动处理冲突
+      # 强制提交（不管有没有变更，都会覆盖）
       - name: Commit and push data.json
         uses: ad-m/github-push-action@master
         with:
           branch: ${{ github.ref_name }}
-          directory: ./output
-          files: data.json
+          directory: ./
+          files: output/data.json
           github_token: ${{ secrets.GITHUB_TOKEN }}
           message: "Auto-update data [skip ci] - $(date +'%Y-%m-%d %H:%M:%S')"
+          force: true  # 关键：强制推送，即使 Git 认为无变更
