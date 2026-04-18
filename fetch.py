@@ -34,61 +34,57 @@ def fetch_from_list_page(category):
         return []
 
     papers = []
-    
-    # 按章节抓取，严格区分 new / cross / replace
-    sections = [
-        ("New submissions", "new"),
-        ("Cross submissions", "cross"),
-        ("Replacement submissions", "replace")
-    ]
+    dts = soup.find_all("dt")
 
-    for section_title, type_val in sections:
-        for h3 in soup.find_all("h3"):
-            if section_title in h3.get_text(strip=True):
-                # 找到当前章节下的所有论文 dt
-                next_node = h3.find_next_sibling()
-                while next_node and next_node.name == 'dl':
-                    dts = next_node.find_all("dt")
-                    for dt in dts:
-                        id_a = dt.find("a", title="Abstract")
-                        if not id_a:
-                            continue
-                        arxiv_id = id_a["href"].split("/")[-1]
-                        full_arxiv_id = f"arXiv:{arxiv_id}"
+    for dt in dts:
+        # 1. arXiv 编号
+        id_a = dt.find("a", title="Abstract")
+        if not id_a:
+            continue
+        arxiv_id = id_a["href"].split("/")[-1]
+        full_arxiv_id = f"arXiv:{arxiv_id}"
 
-                        dd = dt.find_next_sibling("dd")
-                        if not dd:
-                            continue
+        # ===================== 只修改这里：type 规则 =====================
+        type_text = "new"  # 默认new
+        dt_text = dt.get_text(strip=True)
+        if "cross-list from" in dt_text:
+            type_text = "cross"
+        elif "replaced" in dt_text:
+            type_text = "replace"
+        # =================================================================
 
-                        # 作者
-                        authors = []
-                        author_div = dd.find("div", class_="list-authors")
-                        if author_div:
-                            for a in author_div.find_all("a"):
-                                authors.append(a.text.strip())
-                        author_str = ", ".join(authors) if authors else "Unknown"
+        # 3. 对应详情 dd
+        dd = dt.find_next_sibling("dd")
+        if not dd:
+            continue
 
-                        # 标题
-                        title_div = dd.find("div", class_="list-title")
-                        title = title_div.text.replace("Title:", "").strip() if title_div else ""
+        # 4. 完整作者
+        authors = []
+        author_div = dd.find("div", class_="list-authors")
+        if author_div:
+            for a in author_div.find_all("a"):
+                authors.append(a.text.strip())
+        author_str = ", ".join(authors) if authors else "Unknown"
 
-                        # 链接
-                        link = f"https://arxiv.org/abs/{arxiv_id}"
+        # 5. 标题
+        title_div = dd.find("div", class_="list-title")
+        title = title_div.text.replace("Title:", "").strip() if title_div else ""
 
-                        # 摘要（保持你原来的写法不动）
-                        abstract_p = dd.find("p", class_="list-abstract")
-                        abstract_raw = abstract_p.text.replace("Abstract:", "").strip() if abstract_p else ""
-                        abstract = f"{full_arxiv_id}\n{abstract_raw}"
+        # 6. 链接
+        link = f"https://arxiv.org/abs/{arxiv_id}"
 
-                        papers.append({
-                            "title": title,
-                            "author": author_str,
-                            "link": link,
-                            "abstract": abstract,
-                            "type": type_val  # 严格按章节赋值 new / cross / replace
-                        })
-                    next_node = next_node.find_next_sibling()
-                break
+        # 7. 摘要（你原来正常的写法）
+        abstract_p = dd.find("p", class_="list-abstract")
+        abstract_raw = abstract_p.text.replace("Abstract:", "").strip() if abstract_p else ""
+        abstract = f"{full_arxiv_id}\n{abstract_raw}"
+
+        papers.append({
+            "title": title,
+            "author": author_str,
+            "link": link,
+            "abstract": abstract,
+            "type": type_text
+        })
 
     return papers
 
