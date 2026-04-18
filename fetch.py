@@ -51,12 +51,22 @@ def fetch_from_list_page(category):
         elif "replacement" in dt.text:
             announce_type = "replacement"
 
-        # 3. 对应详情 dd
+        # 3. 抓取 type 字段（括号内内容）
+        type_text = ""
+        span = dt.find("span", class_="list-identifier")
+        if span:
+            text = span.get_text(strip=True)
+            if "(" in text and ")" in text:
+                start = text.find("(") + 1
+                end = text.find(")")
+                type_text = text[start:end].strip()
+
+        # 4. 对应详情 dd
         dd = dt.find_next_sibling("dd")
         if not dd:
             continue
 
-        # 4. 完整作者
+        # 5. 完整作者
         authors = []
         author_div = dd.find("div", class_="list-authors")
         if author_div:
@@ -64,25 +74,23 @@ def fetch_from_list_page(category):
                 authors.append(a.text.strip())
         author_str = ", ".join(authors) if authors else "Unknown"
 
-        # 5. 标题
-        title_div = dd.find("div", class_="list-title")
+        # 6. 标题
+        title_div = dd.find("div", class_="list-title mathjax")
         title = title_div.text.replace("Title:", "").strip() if title_div else ""
 
-        # 6. 链接
+        # 7. 链接
         link = f"https://arxiv.org/abs/{arxiv_id}"
 
-        # 7. 摘要（前面加上编号+类型）
-        abstract_p = dd.find("p", class_="list-abstract")
-        abstract_raw = abstract_p.text.replace("Abstract:", "").strip() if abstract_p else ""
-        summary = f"{full_arxiv_id} Announce Type: {announce_type}\n{abstract_raw}"
+        # 8. 抓取摘要（从列表页正文直接抓，字段名改为 abstract）
+        abstract_p = dd.find("p", class_="mathjax")
+        abstract = abstract_p.get_text(strip=True) if abstract_p else ""
 
         papers.append({
             "title": title,
             "author": author_str,
             "link": link,
-            "time": arxiv_date,
-            "category": category,
-            "summary": summary
+            "abstract": abstract,  # 字段名已改为 abstract
+            "type": type_text
         })
 
     return papers
