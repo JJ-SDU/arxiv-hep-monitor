@@ -44,19 +44,19 @@ def fetch_from_list_page(category):
         arxiv_id = id_a["href"].split("/")[-1]
         full_arxiv_id = f"arXiv:{arxiv_id}"
 
-        # 2. 识别 Announce Type
+        # 2. 识别类型（仅用于分类，不输出）
         announce_type = "new"
         if "cross-list" in dt.text:
-            announce_type = "cross-list"
+            announce_type = "cross"
         elif "replacement" in dt.text:
-            announce_type = "replacement"
+            announce_type = "replace"
 
         # 3. 对应详情 dd
         dd = dt.find_next_sibling("dd")
         if not dd:
             continue
 
-        # 4. 完整作者（保留括号内容，修改点1）
+        # 4. 完整作者
         author_str = "Unknown"
         author_div = dd.find("div", class_="list-authors")
         if author_div:
@@ -66,28 +66,43 @@ def fetch_from_list_page(category):
         title_div = dd.find("div", class_="list-title")
         title = title_div.text.replace("Title:", "").strip() if title_div else ""
 
-        # 6. 链接
-        link = f"https://arxiv.org/abs/{arxiv_id}"
+        # 6. 链接 → 已修改为 PDF 链接
+        link = f"https://arxiv.org/pdf/{arxiv_id}"
 
-        # 7. 摘要（去掉前缀，只保留纯摘要，修改点4）
+        # 7. 摘要
         abstract_p = dd.find("p", class_="list-abstract")
         summary = abstract_p.text.replace("Abstract:", "").strip() if abstract_p else ""
 
-        papers.append({
+        # 只保留要求的 5 个字段
+        paper = {
             "title": title,
             "author": author_str,
             "link": link,
-            # 去掉time，替换为arXiv number（修改点2）
             "arXiv number": full_arxiv_id,
-            # 新增Announce type字段（修改点3）
-            "Announce type": announce_type,
-            "category": category,
             "summary": summary
-        })
+        }
+
+        papers.append((announce_type, paper))
 
     return papers
 
-# ============== 只抓取这两个分类的全部 new/cross/replace ==============
+# ============== 统一分类函数：new / cross / replace ==============
+def categorize_papers(papers):
+    categorized = {
+        "new": [],
+        "cross": [],
+        "replace": []
+    }
+    for announce_type, paper in papers:
+        if announce_type == "new":
+            categorized["new"].append(paper)
+        elif announce_type == "cross":
+            categorized["cross"].append(paper)
+        elif announce_type == "replace":
+            categorized["replace"].append(paper)
+    return categorized
+
+# ============== 抓取两个分类 ==============
 CATEGORIES = ["hep-ex", "hep-ph"]
 
 result = {
@@ -98,8 +113,12 @@ result = {
 
 for cat in CATEGORIES:
     papers = fetch_from_list_page(cat)
-    result[cat] = papers
-    print(f"✅ {cat} 抓到：{len(papers)} 篇")
+    result[cat] = categorize_papers(papers)
+    
+    new_cnt = len(result[cat]["new"])
+    cross_cnt = len(result[cat]["cross"])
+    replace_cnt = len(result[cat]["replace"])
+    print(f"✅ {cat} 抓到：new={new_cnt} cross={cross_cnt} replace={replace_cnt} 总计={new_cnt+cross_cnt+replace_cnt}")
 
 # ============== 写入原路径 ==============
 with open("output/data.json", "w", encoding="utf-8") as f:
