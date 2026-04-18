@@ -2,6 +2,7 @@ import json
 import os
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 # 创建输出目录
 os.makedirs("output", exist_ok=True)
@@ -10,110 +11,99 @@ os.makedirs("output", exist_ok=True)
 def get_arxiv_original_date(category="hep-ex"):
     url = f"https://arxiv.org/list/{category}/new"
     try:
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
-        response = requests.get(url, headers=headers, timeout=15)
-        response.raise_for_status()
+        response = requests.get(url, timeout=10)
         soup = BeautifulSoup(response.text, "html.parser")
         h3 = soup.find("h3", string=lambda t: t and "Showing new listings for" in t)
         if h3:
             return h3.text.replace("Showing new listings for ", "").strip()
-    except Exception as e:
-        print(f"❌ 获取日期失败: {e}")
+    except:
+        pass
     return "No date"
 
-# 获取日期
+# 获取网页原始日期
 arxiv_date = get_arxiv_original_date("hep-ex")
 print(f"📅 网页原始日期：{arxiv_date}")
 
-# ============== 按章节精准抓取：new / cross / replace ==============
-def fetch_papers_by_section(url, section_name):
-    papers = []
-    print(f"\n🔍 正在抓取章节：{section_name}")
-
+# ============== 从 list/new 页面抓取全部论文（含new/cross/replace）==============
+def fetch_from_list_page(category):
+    url = f"https://arxiv.org/list/{category}/new"
     try:
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
-        response = requests.get(url, headers=headers, timeout=20)
-        response.raise_for_status()
+        response = requests.get(url, timeout=15)
         soup = BeautifulSoup(response.text, "html.parser")
-    except Exception as e:
-        print(f"❌ 请求失败: {e}")
+    except:
         return []
 
-    # 找到对应章节标题
-    for h3 in soup.find_all("h3"):
-        if section_name in h3.text:
-            # 关键修复：arXiv 真实结构是 h3 后直接跟 <dl id="articles">
-            articles_dl = h3.find_next_sibling("dl", id="articles")
-            if not articles_dl:
-                print(f"⚠️ 警告：未找到 {section_name} 的文章列表")
-                continue
+    papers = []
+    dts = soup.find_all("dt")
 
-            dts = articles_dl.find_all("dt")
-            print(f"📄 找到文章数量：{len(dts)}")
+    for dt in dts:
+        # 1. arXiv 编号
+        id_a = dt.find("a", title="Abstract")
+        if not id_a:
+            continue
+        arxiv_id = id_a["href"].split("/")[-1]
+        full_arxiv_id = f"arXiv:{arxiv_id}"
 
-            for idx, dt in enumerate(dts):
-                id_a = dt.find("a", title="Abstract")
-                if not id_a:
-                    continue
+        # 2. 识别 Announce Type
+        announce_type = "new"
+        if "cross-list" in dt.text:
+            announce_type = "cross-list"
+        elif "replacement" in dt.text:
+            announce_type = "replacement"
 
-                arxiv_id = id_a["href"].split("/")[-1]
-                full_arxiv_id = f"arXiv:{arxiv_id}"
-                dd = dt.find_next_sibling("dd")
-                if not dd:
-                    continue
+        # 3. 对应详情 dd
+        dd = dt.find_next_sibling("dd")
+        if not dd:
+            continue
 
-                # 作者
-                author_div = dd.find("div", class_="list-authors")
-                author_str = author_div.get_text(strip=True).replace("Authors:", "").strip() if author_div else "Unknown"
+        # 4. 完整作者
+        authors = []
+        author_div = dd.find("div", class_="list-authors")
+        if author_div:
+            for a in author_div.find_all("a"):
+                authors.append(a.text.strip())
+        author_str = ", ".join(authors) if authors else "Unknown"
 
-                # 标题
-                title_div = dd.find("div", class_="list-title mathjax")
-                title = title_div.get_text(strip=True).replace("Title:", "").strip() if title_div else ""
+        # 5. 标题
+        title_div = dd.find("div", class_="list-title")
+        title = title_div.text.replace("Title:", "").strip() if title_div else ""
 
-                # PDF 链接
-                link = f"https://arxiv.org/pdf/{arxiv_id}"
+        # 6. 链接
+        link = f"https://arxiv.org/abs/{arxiv_id}"
 
-                # 关键修复：直接从列表页抓取摘要（真实标签是 p.mathjax）
-                abstract_p = dd.find("p", class_="mathjax")
-                summary = abstract_p.get_text(strip=True) if abstract_p else ""
+        # 7. 摘要（前面加上编号+类型）
+        abstract_p = dd.find("p", class_="list-abstract")
+        abstract_raw = abstract_p.text.replace("Abstract:", "").strip() if abstract_p else ""
+        summary = f"{full_arxiv_id} Announce Type: {announce_type}\n{abstract_raw}"
 
-                papers.append({
-                    "title": title,
-                    "author": author_str,
-                    "link": link,
-                    "arXiv number": full_arxiv_id,
-                    "summary": summary
-                })
-                print(f"  ✅ 已抓取第 {idx+1} 篇：{arxiv_id}")
-            break
+        papers.append({
+            "title": title,
+            "author": author_str,
+            "link": link,
+            "time": arxiv_date,
+            "category": category,
+            "summary": summary
+        })
+
     return papers
 
-# ============== 抓取 hep-ex / hep-ph 的三类文章 ==============
-def fetch_category(category):
-    url = f"https://arxiv.org/list/{category}/new"
-    return {
-        "new": fetch_papers_by_section(url, "New submissions"),
-        "cross": fetch_papers_by_section(url, "Cross submissions"),
-        "replace": fetch_papers_by_section(url, "Replacement submissions")
-    }
+# ============== 只抓取这两个分类的全部 new/cross/replace ==============
+CATEGORIES = ["hep-ex", "hep-ph"]
 
-# ============== 主逻辑 ==============
 result = {
     "date": arxiv_date,
-    "hep-ex": fetch_category("hep-ex"),
-    "hep-ph": fetch_category("hep-ph")
+    "hep-ex": [],
+    "hep-ph": []
 }
 
-# 打印统计
-for cat in ["hep-ex", "hep-ph"]:
-    data = result[cat]
-    n = len(data["new"])
-    c = len(data["cross"])
-    r = len(data["replace"])
-    print(f"\n✅ {cat}: new={n} cross={c} replace={r} 总计={n+c+r}")
+for cat in CATEGORIES:
+    papers = fetch_from_list_page(cat)
+    result[cat] = papers
+    print(f"✅ {cat} 抓到：{len(papers)} 篇")
 
-# 写入文件（确保编码正确）
+# ============== 写入原路径 ==============
 with open("output/data.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
-print("\n🎉 抓取完成！new / cross / replace 全部正确抓取！")
+os.utime("output/data.json", None)
+print("\n🎉 抓取完成！文件已覆盖！")
