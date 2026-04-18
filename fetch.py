@@ -56,13 +56,11 @@ def fetch_from_list_page(category):
         if not dd:
             continue
 
-        # 4. 完整作者
-        authors = []
+        # 4. 完整作者（保留括号内容，修改点1）
+        author_str = "Unknown"
         author_div = dd.find("div", class_="list-authors")
         if author_div:
-            for a in author_div.find_all("a"):
-                authors.append(a.text.strip())
-        author_str = ", ".join(authors) if authors else "Unknown"
+            author_str = author_div.get_text(strip=True).replace("Authors:", "").strip()
 
         # 5. 标题
         title_div = dd.find("div", class_="list-title")
@@ -71,16 +69,18 @@ def fetch_from_list_page(category):
         # 6. 链接
         link = f"https://arxiv.org/abs/{arxiv_id}"
 
-        # 7. 摘要（前面加上编号+类型）
+        # 7. 摘要（去掉前缀，只保留纯摘要，修改点4）
         abstract_p = dd.find("p", class_="list-abstract")
-        abstract_raw = abstract_p.text.replace("Abstract:", "").strip() if abstract_p else ""
-        summary = f"{full_arxiv_id} Announce Type: {announce_type}\n{abstract_raw}"
+        summary = abstract_p.text.replace("Abstract:", "").strip() if abstract_p else ""
 
         papers.append({
             "title": title,
             "author": author_str,
             "link": link,
-            "time": arxiv_date,
+            # 去掉time，替换为arXiv number（修改点2）
+            "arXiv number": full_arxiv_id,
+            # 新增Announce type字段（修改点3）
+            "Announce type": announce_type,
             "category": category,
             "summary": summary
         })
