@@ -34,64 +34,61 @@ def fetch_from_list_page(category):
         return []
 
     papers = []
-    dts = soup.find_all("dt")
+    
+    # 按章节抓取，严格区分 new / cross / replace
+    sections = [
+        ("New submissions", "new"),
+        ("Cross submissions", "cross"),
+        ("Replacement submissions", "replace")
+    ]
 
-    for dt in dts:
-        # 1. arXiv 编号
-        id_a = dt.find("a", title="Abstract")
-        if not id_a:
-            continue
-        arxiv_id = id_a["href"].split("/")[-1]
-        full_arxiv_id = f"arXiv:{arxiv_id}"
+    for section_title, type_val in sections:
+        for h3 in soup.find_all("h3"):
+            if section_title in h3.get_text(strip=True):
+                # 找到当前章节下的所有论文 dt
+                next_node = h3.find_next_sibling()
+                while next_node and next_node.name == 'dl':
+                    dts = next_node.find_all("dt")
+                    for dt in dts:
+                        id_a = dt.find("a", title="Abstract")
+                        if not id_a:
+                            continue
+                        arxiv_id = id_a["href"].split("/")[-1]
+                        full_arxiv_id = f"arXiv:{arxiv_id}"
 
-        # 2. 识别 Announce Type
-        announce_type = "new"
-        if "cross-list" in dt.text:
-            announce_type = "cross-list"
-        elif "replacement" in dt.text:
-            announce_type = "replacement"
+                        dd = dt.find_next_sibling("dd")
+                        if not dd:
+                            continue
 
-        # 3. 抓取 type 字段（括号内内容）
-        type_text = ""
-        span = dt.find("span", class_="list-identifier")
-        if span:
-            text = span.get_text(strip=True)
-            if "(" in text and ")" in text:
-                start = text.find("(") + 1
-                end = text.find(")")
-                type_text = text[start:end].strip()
+                        # 作者
+                        authors = []
+                        author_div = dd.find("div", class_="list-authors")
+                        if author_div:
+                            for a in author_div.find_all("a"):
+                                authors.append(a.text.strip())
+                        author_str = ", ".join(authors) if authors else "Unknown"
 
-        # 4. 对应详情 dd
-        dd = dt.find_next_sibling("dd")
-        if not dd:
-            continue
+                        # 标题
+                        title_div = dd.find("div", class_="list-title")
+                        title = title_div.text.replace("Title:", "").strip() if title_div else ""
 
-        # 5. 完整作者
-        authors = []
-        author_div = dd.find("div", class_="list-authors")
-        if author_div:
-            for a in author_div.find_all("a"):
-                authors.append(a.text.strip())
-        author_str = ", ".join(authors) if authors else "Unknown"
+                        # 链接
+                        link = f"https://arxiv.org/abs/{arxiv_id}"
 
-        # 6. 标题
-        title_div = dd.find("div", class_="list-title mathjax")
-        title = title_div.text.replace("Title:", "").strip() if title_div else ""
+                        # 摘要（保持你原来的写法不动）
+                        abstract_p = dd.find("p", class_="list-abstract")
+                        abstract_raw = abstract_p.text.replace("Abstract:", "").strip() if abstract_p else ""
+                        abstract = f"{full_arxiv_id}\n{abstract_raw}"
 
-        # 7. 链接
-        link = f"https://arxiv.org/abs/{arxiv_id}"
-
-        # 8. 抓取摘要（从列表页正文直接抓，字段名改为 abstract）
-        abstract_p = dd.find("p", class_="mathjax")
-        abstract = abstract_p.get_text(strip=True) if abstract_p else ""
-
-        papers.append({
-            "title": title,
-            "author": author_str,
-            "link": link,
-            "abstract": abstract,  # 字段名已改为 abstract
-            "type": type_text
-        })
+                        papers.append({
+                            "title": title,
+                            "author": author_str,
+                            "link": link,
+                            "abstract": abstract,
+                            "type": type_val  # 严格按章节赋值 new / cross / replace
+                        })
+                    next_node = next_node.find_next_sibling()
+                break
 
     return papers
 
