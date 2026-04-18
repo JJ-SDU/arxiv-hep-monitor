@@ -56,12 +56,14 @@ def fetch_from_list_page(category):
         if not dd:
             continue
 
-        # 4. 完整作者
+        # 4. 完整作者（包含括号及文字）
         authors = []
         author_div = dd.find("div", class_="list-authors")
         if author_div:
-            for a in author_div.find_all("a"):
-                authors.append(a.text.strip())
+            # 直接获取整个作者行的完整文本
+            author_text = author_div.get_text(strip=True).replace("Authors:", "").strip()
+            # 按逗号分割保留全部内容
+            authors = [a.strip() for a in author_text.split(",")]
         author_str = ", ".join(authors) if authors else "Unknown"
 
         # 5. 标题
