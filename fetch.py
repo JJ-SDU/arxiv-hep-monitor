@@ -15,8 +15,8 @@ def get_arxiv_original_date(category="hep-ex"):
         h3 = soup.find("h3", string=lambda t: t and "Showing new listings for" in t)
         if h3:
             return h3.text.replace("Showing new listings for ", "").strip()
-    except Exception as e:
-        print(f"获取日期失败: {e}")
+    except:
+        pass
     return "No date"
 
 # 获取日期
@@ -28,21 +28,23 @@ def fetch_papers_by_section(url, section_name):
     try:
         response = requests.get(url, timeout=15)
         soup = BeautifulSoup(response.text, "html.parser")
-    except Exception as e:
-        print(f"请求失败: {e}")
+    except:
         return []
 
     papers = []
+    print(f"\n🔍 正在抓取章节：{section_name}")
+
     # 找到对应章节标题
     for h3 in soup.find_all("h3"):
         if section_name in h3.text:
-            # 关键修复：arXiv 列表页结构是 h3 后面直接跟 <dl id="articles">，不是 div.list-items
-            articles_dl = h3.find_next_sibling("dl", id="articles")
-            if not articles_dl:
+            list_items = h3.find_next_sibling("div", class_="list-items")
+            if not list_items:
                 continue
 
-            dts = articles_dl.find_all("dt")
-            for dt in dts:
+            dts = list_items.find_all("dt")
+            print(f"📄 找到文章数量：{len(dts)}")
+
+            for idx, dt in enumerate(dts):
                 id_a = dt.find("a", title="Abstract")
                 if not id_a:
                     continue
@@ -58,15 +60,25 @@ def fetch_papers_by_section(url, section_name):
                 author_str = author_div.get_text(strip=True).replace("Authors:", "").strip() if author_div else "Unknown"
 
                 # 标题
-                title_div = dd.find("div", class_="list-title mathjax")
+                title_div = dd.find("div", class_="list-title")
                 title = title_div.get_text(strip=True).replace("Title:", "").strip() if title_div else ""
 
                 # PDF 链接
                 link = f"https://arxiv.org/pdf/{arxiv_id}"
 
-                # 关键修复：正确定位摘要标签
-                abstract_p = dd.find("p", class_="mathjax")
-                summary = abstract_p.get_text(strip=True) if abstract_p else ""
+                # ===================== 【唯一修改：正确抓取摘要】 =====================
+                abstract_url = f"https://arxiv.org/abs/{arxiv_id}"
+                try:
+                    abs_resp = requests.get(abstract_url, timeout=8)
+                    abs_soup = BeautifulSoup(abs_resp.text, "html.parser")
+                    blockquote = abs_soup.find("blockquote", class_="abstract")
+                    if blockquote:
+                        summary = blockquote.get_text(strip=True).replace("Abstract:", "").strip()
+                    else:
+                        summary = ""
+                except:
+                    summary = ""
+                # ========================================================================
 
                 papers.append({
                     "title": title,
@@ -75,6 +87,7 @@ def fetch_papers_by_section(url, section_name):
                     "arXiv number": full_arxiv_id,
                     "summary": summary
                 })
+                print(f"  ✅ 已抓取第 {idx+1} 篇：{arxiv_id}")
             break
     return papers
 
@@ -100,11 +113,11 @@ for cat in ["hep-ex", "hep-ph"]:
     n = len(data["new"])
     c = len(data["cross"])
     r = len(data["replace"])
-    print(f"✅ {cat}: new={n} cross={c} replace={r} 总计={n+c+r}")
+    print(f"\n✅ {cat}: new={n} cross={c} replace={r} 总计={n+c+r}")
 
 # 写入文件
 with open("output/data.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
 os.utime("output/data.json", None)
-print("\n🎉 抓取完成！new / cross / replace 全部正确抓取！")
+print("\n🎉 抓取完成！摘要已全部成功抓取！")
