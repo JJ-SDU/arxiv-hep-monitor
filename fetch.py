@@ -62,13 +62,14 @@ def fetch_all_from_list(category):
             if not dd:
                 continue
 
-            # 3. 完整作者列表（修复）
+            # 3. 完整作者列表 + 保留括号内容（修复）
             authors = []
             auth_div = dd.find("div", class_="list-authors")
             if auth_div:
-                for a in auth_div.find_all("a"):
-                    authors.append(a.get_text(strip=True))
-            author_str = ", ".join(authors) if authors else "Unknown"
+                # 获取整个作者行文本，不拆分标签，保留括号
+                author_text = auth_div.get_text(strip=True).replace("Authors:", "").strip()
+                authors = [author_text]
+            author_str = authors[0] if authors else "Unknown"
 
             # 4. 标题
             title = ""
@@ -79,7 +80,7 @@ def fetch_all_from_list(category):
             # 5. 链接
             link = f"https://arxiv.org/abs/{arxiv_number.replace('arXiv:', '')}"
 
-            # 6. 摘要（彻底修复空摘要问题）
+            # 6. 摘要
             summary = ""
             abs_p = dd.find("p", class_="list-abstract")
             if abs_p:
@@ -90,10 +91,10 @@ def fetch_all_from_list(category):
                 "title": title,
                 "author": author_str,
                 "link": link,
-                "arXiv number": arxiv_number,        # 新增
-                "Announce type": announce_type,      # 新增
+                "arXiv number": arxiv_number,        # 已按要求替换
+                "Announce type": announce_type,      # 已按要求新增
                 "category": category,
-                "summary": summary                   # 修复不空
+                "summary": summary
             })
 
     return papers
