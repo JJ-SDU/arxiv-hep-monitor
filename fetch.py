@@ -15,8 +15,8 @@ def get_arxiv_original_date(category="hep-ex"):
         h3 = soup.find("h3", string=lambda t: t and "Showing new listings for" in t)
         if h3:
             return h3.text.replace("Showing new listings for ", "").strip()
-    except:
-        pass
+    except Exception as e:
+        print(f"获取日期失败: {e}")
     return "No date"
 
 # 获取日期
@@ -28,18 +28,20 @@ def fetch_papers_by_section(url, section_name):
     try:
         response = requests.get(url, timeout=15)
         soup = BeautifulSoup(response.text, "html.parser")
-    except:
+    except Exception as e:
+        print(f"请求失败: {e}")
         return []
 
     papers = []
     # 找到对应章节标题
     for h3 in soup.find_all("h3"):
         if section_name in h3.text:
-            list_items = h3.find_next_sibling("div", class_="list-items")
-            if not list_items:
+            # 关键修复：arXiv 列表页结构是 h3 后面直接跟 <dl id="articles">，不是 div.list-items
+            articles_dl = h3.find_next_sibling("dl", id="articles")
+            if not articles_dl:
                 continue
 
-            dts = list_items.find_all("dt")
+            dts = articles_dl.find_all("dt")
             for dt in dts:
                 id_a = dt.find("a", title="Abstract")
                 if not id_a:
@@ -56,16 +58,15 @@ def fetch_papers_by_section(url, section_name):
                 author_str = author_div.get_text(strip=True).replace("Authors:", "").strip() if author_div else "Unknown"
 
                 # 标题
-                title_div = dd.find("div", class_="list-title")
+                title_div = dd.find("div", class_="list-title mathjax")
                 title = title_div.get_text(strip=True).replace("Title:", "").strip() if title_div else ""
 
-                # PDF 链接（你要求的格式）
+                # PDF 链接
                 link = f"https://arxiv.org/pdf/{arxiv_id}"
 
-                # ===================== 【只修改这里：抓取摘要】 =====================
+                # 关键修复：正确定位摘要标签
                 abstract_p = dd.find("p", class_="mathjax")
-                summary = abstract_p.get_text(strip=True).replace("Abstract:", "").strip() if abstract_p else ""
-                # ====================================================================
+                summary = abstract_p.get_text(strip=True) if abstract_p else ""
 
                 papers.append({
                     "title": title,
