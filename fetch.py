@@ -44,14 +44,12 @@ def fetch_from_list_page(category):
         arxiv_id = id_a["href"].split("/")[-1]
         full_arxiv_id = f"arXiv:{arxiv_id}"
 
-        # ===================== 只修改这里：type 规则 =====================
-        type_text = "new"  # 默认new
-        dt_text = dt.get_text(strip=True)
-        if "cross-list from" in dt_text:
+        # 2. 识别 type：默认 new，cross-list → cross，replaced → replace
+        type_text = "new"  # 默认值
+        if "cross-list from" in dt.text:
             type_text = "cross"
-        elif "replaced" in dt_text:
+        elif "replaced" in dt.text:
             type_text = "replace"
-        # =================================================================
 
         # 3. 对应详情 dd
         dd = dt.find_next_sibling("dd")
@@ -67,16 +65,15 @@ def fetch_from_list_page(category):
         author_str = ", ".join(authors) if authors else "Unknown"
 
         # 5. 标题
-        title_div = dd.find("div", class_="list-title")
+        title_div = dd.find("div", class_="list-title mathjax")
         title = title_div.text.replace("Title:", "").strip() if title_div else ""
 
         # 6. 链接
         link = f"https://arxiv.org/abs/{arxiv_id}"
 
-        # 7. 摘要（你原来正常的写法）
-        abstract_p = dd.find("p", class_="list-abstract")
-        abstract_raw = abstract_p.text.replace("Abstract:", "").strip() if abstract_p else ""
-        abstract = f"{full_arxiv_id}\n{abstract_raw}"
+        # 7. 抓取摘要（从列表页正文直接抓，字段名改为 abstract）
+        abstract_p = dd.find("p", class_="mathjax")
+        abstract = abstract_p.get_text(strip=True) if abstract_p else ""
 
         papers.append({
             "title": title,
