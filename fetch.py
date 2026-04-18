@@ -19,7 +19,7 @@ def get_arxiv_original_date(category="hep-ex"):
         pass
     return "No date"
 
-# ============== 抓取一个 list/new 页面全部文章（修复版）==============
+# ============== 抓取一个 list/new 页面全部文章 ==============
 def fetch_all_from_list(category):
     url = f"https://arxiv.org/list/{category}/new"
     try:
@@ -29,59 +29,70 @@ def fetch_all_from_list(category):
         return []
 
     papers = []
-    # 直接按顺序抓取所有 dt/dd 对，避免按h2识别导致的问题
-    dts = soup.find_all("dt")
-    dds = soup.find_all("dd")
+    current_announce = ""
 
-    for i, dt in enumerate(dts):
-        if i >= len(dds):
+    for tag in soup.find_all():
+        # 识别 announce type 区域
+        if tag.name == "h2":
+            txt = tag.get_text(strip=True).lower()
+            if "new submissions" in txt:
+                current_announce = "new"
+            elif "cross listings" in txt:
+                current_announce = "cross-list"
+            elif "replacements" in txt:
+                current_announce = "replacement"
             continue
-        dd = dds[i]
 
-        # 1. 提取 arXiv 完整编号（例如 arXiv:2604.15049）
-        id_span = dt.find("span", class_="list-identifier")
-        if not id_span:
-            continue
-        arxiv_number = id_span.find("a").get_text(strip=True)
+        # 抓取每一篇论文 dt
+        if tag.name == "dt" and tag.find("span", class_="list-identifier"):
+            id_span = tag.find("span", class_="list-identifier")
+            if not id_span:
+                continue
 
-        # 2. 提取括号里的 announce type 原文（例如 cross-list from astro-ph.HE）
-        announce_type = ""
-        sup_text = id_span.find("sup")
-        if sup_text:
-            announce_type = sup_text.get_text(strip=True).strip("()")
+            # 1. 提取 arXiv 完整编号
+            arxiv_number = id_span.find("a").get_text(strip=True)
 
-        # 3. 完整作者列表（含括号内的合作组说明）
-        author_str = ""
-        auth_div = dd.find("div", class_="list-authors")
-        if auth_div:
-            # 直接取整个div的文本，不只是<a>标签，这样能包含括号内容
-            author_str = auth_div.get_text(strip=True).replace("Authors:", "").strip()
+            # 2. 提取括号里的 announce type 原文
+            announce_type = ""
+            sup_text = id_span.find("sup")
+            if sup_text:
+                announce_type = sup_text.get_text(strip=True).strip("()")
 
-        # 4. 标题
-        title = ""
-        title_div = dd.find("div", class_="list-title")
-        if title_div:
-            title = title_div.get_text(strip=True).replace("Title:", "").strip()
+            dd = tag.find_next_sibling("dd")
+            if not dd:
+                continue
 
-        # 5. 链接
-        link = f"https://arxiv.org/abs/{arxiv_number.replace('arXiv:', '')}"
+            # ====================== 修复 1：作者完整（保留括号内容）======================
+            author_str = ""
+            auth_div = dd.find("div", class_="list-authors")
+            if auth_div:
+                author_str = auth_div.get_text(strip=True).replace("Authors:", "").strip()
 
-        # 6. 摘要（修复空摘要问题，直接取完整文本）
-        summary = ""
-        abs_p = dd.find("p", class_="list-abstract")
-        if abs_p:
-            summary = abs_p.get_text(strip=True).replace("Abstract:", "").strip()
+            # ====================== 修复 2：标题 ======================
+            title = ""
+            title_div = dd.find("div", class_="list-title")
+            if title_div:
+                title = title_div.get_text(strip=True).replace("Title:", "").strip()
 
-        # 7. 最终字段：按你要求的结构
-        papers.append({
-            "title": title,
-            "author": author_str,
-            "link": link,
-            "arXiv number": arxiv_number,
-            "Announce type": announce_type,
-            "category": category,
-            "summary": summary
-        })
+            # ====================== 链接 ======================
+            link = f"https://arxiv.org/abs/{arxiv_number.replace('arXiv:', '')}"
+
+            # ====================== 修复 3：摘要（抓 Subjects 下面的内容）======================
+            summary = ""
+            abs_p = dd.find("p", class_="list-abstract")
+            if abs_p:
+                summary = abs_p.get_text(strip=True).replace("Abstract:", "").strip()
+
+            # ====================== 修复 4：字段结构（去掉time，加编号+类型）======================
+            papers.append({
+                "title": title,
+                "author": author_str,
+                "link": link,
+                "arXiv number": arxiv_number,
+                "Announce type": announce_type,
+                "category": category,
+                "summary": summary
+            })
 
     return papers
 
