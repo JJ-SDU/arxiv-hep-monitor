@@ -49,10 +49,10 @@ def fetch_all_from_list(category):
             if not id_span:
                 continue
 
-            # 1. 提取 arXiv 完整编号
+            # 1. 提取 arXiv 完整编号（例如 arXiv:2604.14716）
             arxiv_number = id_span.find("a").get_text(strip=True)
 
-            # 2. 提取括号里的 announce type 原文
+            # 2. 提取括号里的 announce type 原文（例如 cross-list from astro-ph.HE）
             announce_type = ""
             sup_text = id_span.find("sup")
             if sup_text:
@@ -62,36 +62,38 @@ def fetch_all_from_list(category):
             if not dd:
                 continue
 
-            # ====================== 修复 1：作者完整（保留括号内容）======================
-            author_str = ""
+            # 3. 完整作者列表（修复）
+            authors = []
             auth_div = dd.find("div", class_="list-authors")
             if auth_div:
-                author_str = auth_div.get_text(strip=True).replace("Authors:", "").strip()
+                for a in auth_div.find_all("a"):
+                    authors.append(a.get_text(strip=True))
+            author_str = ", ".join(authors) if authors else "Unknown"
 
-            # ====================== 修复 2：标题 ======================
+            # 4. 标题
             title = ""
             title_div = dd.find("div", class_="list-title")
             if title_div:
                 title = title_div.get_text(strip=True).replace("Title:", "").strip()
 
-            # ====================== 链接 ======================
+            # 5. 链接
             link = f"https://arxiv.org/abs/{arxiv_number.replace('arXiv:', '')}"
 
-            # ====================== 修复 3：摘要（抓 Subjects 下面的内容）======================
+            # 6. 摘要（彻底修复空摘要问题）
             summary = ""
             abs_p = dd.find("p", class_="list-abstract")
             if abs_p:
                 summary = abs_p.get_text(strip=True).replace("Abstract:", "").strip()
 
-            # ====================== 修复 4：字段结构（去掉time，加编号+类型）======================
+            # 7. 最终字段（去掉 time，增加 arXiv number + Announce type）
             papers.append({
                 "title": title,
                 "author": author_str,
                 "link": link,
-                "arXiv number": arxiv_number,
-                "Announce type": announce_type,
+                "arXiv number": arxiv_number,        # 新增
+                "Announce type": announce_type,      # 新增
                 "category": category,
-                "summary": summary
+                "summary": summary                   # 修复不空
             })
 
     return papers
