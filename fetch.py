@@ -15,44 +15,33 @@ def get_arxiv_original_date(category="hep-ex"):
         h3 = soup.find("h3", string=lambda t: t and "Showing new listings for" in t)
         if h3:
             return h3.text.replace("Showing new listings for ", "").strip()
-    except:
-        pass
+    except Exception as e:
+        print(f"获取日期失败: {e}")
     return "No date"
 
 # 获取日期
 arxiv_date = get_arxiv_original_date("hep-ex")
 print(f"📅 网页原始日期：{arxiv_date}")
 
-# ============== 进入摘要页面抓取摘要 ==============
-def get_arxiv_abstract(arxiv_id):
-    url = f"https://arxiv.org/abs/{arxiv_id}"
-    try:
-        response = requests.get(url, timeout=10)
-        soup = BeautifulSoup(response.text, "html.parser")
-        abstract_block = soup.find("blockquote", class_="abstract")
-        if abstract_block:
-            return abstract_block.get_text(strip=True).replace("Abstract:", "").strip()
-    except:
-        pass
-    return ""
-
-# ============== 按章节精准抓取：new / cross / replace ==============
+# ============== 按章节精准抓取：new / cross / replace（不跳页，直接抓列表页摘要） ==============
 def fetch_papers_by_section(url, section_name):
     try:
         response = requests.get(url, timeout=15)
         soup = BeautifulSoup(response.text, "html.parser")
-    except:
+    except Exception as e:
+        print(f"请求失败: {e}")
         return []
 
     papers = []
     # 找到对应章节标题
     for h3 in soup.find_all("h3"):
         if section_name in h3.text:
-            list_items = h3.find_next_sibling("div", class_="list-items")
-            if not list_items:
+            # 修正：arXiv 列表页的结构是 h3 后面直接跟着 <dl id='articles'>，而不是 div.list-items
+            articles_dl = h3.find_next_sibling("dl", id="articles")
+            if not articles_dl:
                 continue
 
-            dts = list_items.find_all("dt")
+            dts = articles_dl.find_all("dt")
             for dt in dts:
                 id_a = dt.find("a", title="Abstract")
                 if not id_a:
@@ -66,7 +55,7 @@ def fetch_papers_by_section(url, section_name):
 
                 # 作者
                 author_div = dd.find("div", class_="list-authors")
-                author_str = author_div.get_text(strip=True).replace("Authors:", "").strip() if author_div else "Unknown"
+                author_str = author_div.get_text(strip=True) if author_div else "Unknown"
 
                 # 标题
                 title_div = dd.find("div", class_="list-title")
@@ -75,8 +64,9 @@ def fetch_papers_by_section(url, section_name):
                 # PDF 链接
                 link = f"https://arxiv.org/pdf/{arxiv_id}"
 
-                # ✅ 真正抓取摘要（进入详情页）
-                summary = get_arxiv_abstract(arxiv_id)
+                # ✅ 直接从列表页抓摘要：你给的源码里是 <p class='mathjax'>
+                abstract_p = dd.find("p", class_="mathjax")
+                summary = abstract_p.get_text(strip=True) if abstract_p else ""
 
                 papers.append({
                     "title": title,
