@@ -87,13 +87,15 @@ def fetch_from_list_page(category):
 
     return papers
 
-# ============== 只抓取这两个分类的全部 new/cross/replace ==============
-CATEGORIES = ["hep-ex", "hep-ph"]
+# ============== 新增 hep-lat 和 hep-th 分类 ==============
+CATEGORIES = ["hep-ex", "hep-ph", "hep-lat", "hep-th"]
 
 result = {
     "date": arxiv_date,
     "hep-ex": [],
-    "hep-ph": []
+    "hep-ph": [],
+    "hep-lat": [],
+    "hep-th": []
 }
 
 for cat in CATEGORIES:
